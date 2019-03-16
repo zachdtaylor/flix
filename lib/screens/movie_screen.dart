@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/movie_card.dart';
 
 class MovieScreen extends StatelessWidget {
   @override
@@ -14,7 +15,7 @@ class MovieScreen extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: Text("Movie Screen!")
+        child: MovieCard()
       )
     );
   }

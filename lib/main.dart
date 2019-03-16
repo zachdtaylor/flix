@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
           accentColor: secondaryColor,
           // canvasColor: const Color(0xFF202124),
           scaffoldBackgroundColor: const Color(0xFF202124),
-          backgroundColor: const Color(0xFF202124),
+          backgroundColor: const Color(0xFF2B2B2B),
           errorColor: const Color(0xFFB00020),
           buttonTheme: ButtonThemeData(
             colorScheme: colorScheme,
