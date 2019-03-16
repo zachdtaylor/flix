@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import './screens/movie_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       ),
     );
 
-    const Color primaryColor = Color(0xFF003F91);
+    const Color primaryColor = Color(0xFF204CA0);
     const Color secondaryColor = Color(0xFF6B727C);
     final ColorScheme colorScheme = const ColorScheme.dark().copyWith(
       primary: primaryColor,
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
     return GraphQLProvider(
       client: client,
       child: MaterialApp(
-        title: 'FlixList',
+        title: 'Flix',
         theme: ThemeData(
           brightness: Brightness.dark,
           accentColorBrightness: Brightness.dark,
@@ -55,7 +56,8 @@ class MyApp extends StatelessWidget {
             textTheme: ButtonTextTheme.primary,
           ),
         ),
-        // home: InboxScreen(title: 'Minbox Demo'),
+        home: MovieScreen(),
+        debugShowCheckedModeBanner: false
       )
     );
   }
