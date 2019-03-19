@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import './screens/movie_screen.dart';
+import './screens/movie_screen/movie_screen.dart';
 
 void main() => runApp(MyApp());
 
