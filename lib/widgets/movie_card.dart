@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class MovieCard extends StatefulWidget {
-  MovieCard({Key key, @required this.child}) : super(key: key);
+  MovieCard({Key key, @required this.child, @required this.imageUrl}) : super(key: key);
 
   final Widget child;
+  final String imageUrl;
 
   @override
   _MovieCardState createState() => _MovieCardState();
@@ -14,17 +15,20 @@ class _MovieCardState extends State<MovieCard> {
   Widget build(BuildContext context) {
     return Center(
       child: Card(
+        color:Color(0xFFFFFFFF),
         child: Column(
           children: <Widget>[
             Container(
+              width: MediaQuery.of(context).size.width,
+              height: 270,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('images/endgame.jpg')
+                  fit: BoxFit.fill,
+                  image: NetworkImage(widget.imageUrl)
                 )
-              )
+              ),
             ),
             Row(
-              mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[ widget.child ],
             )

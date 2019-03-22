@@ -18,15 +18,27 @@ class MovieScreen extends StatelessWidget {
       body: Container(
         child: GridView.count(
           crossAxisCount: 2,
-          childAspectRatio: 1.0,
-          padding: EdgeInsets.all(4.0),
-          mainAxisSpacing: 4.0,
-          crossAxisSpacing: 4.0,
+          childAspectRatio: 0.585,
+          padding: EdgeInsets.all(10.0),
+          mainAxisSpacing: 10.0,
+          crossAxisSpacing: 10.0,
           children: <Widget>[
-            MovieCard(child: VoteBar()),
-            MovieCard(child: VoteBar()),
-            MovieCard(child: VoteBar()),
-            MovieCard(child: VoteBar())
+            MovieCard(
+              child: VoteBar(likes: 10, dislikes:30), 
+              imageUrl: "https://images-na.ssl-images-amazon.com/images/I/51poKKV63GL.jpg"
+            ),
+            MovieCard(
+              child: VoteBar(likes: 27, dislikes: 6),
+              imageUrl: "https://m.media-amazon.com/images/M/MV5BZmUwNGU2ZmItMmRiNC00MjhlLTg5YWUtODMyNzkxODYzMmZlXkEyXkFqcGdeQXVyNTIzOTk5ODM@._V1_.jpg"
+            ),
+            MovieCard(
+              child: VoteBar(likes: 15, dislikes: 8),
+              imageUrl: "https://m.media-amazon.com/images/M/MV5BMTE0YWFmOTMtYTU2ZS00ZTIxLWE3OTEtYTNiYzBkZjViZThiXkEyXkFqcGdeQXVyODMzMzQ4OTI@._V1_.jpg"
+            ),
+            MovieCard(
+              child: VoteBar(likes: 42, dislikes: 1),
+              imageUrl: "http://cdn.collider.com/wp-content/uploads/2019/03/avengers-endgame-poster-405x600.jpg"
+            )
           ]
         )
       )
