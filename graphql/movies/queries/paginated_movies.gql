@@ -1,0 +1,24 @@
+query paginatedMovies($first: Int, $after: String) {
+  user{
+    movies(first: $first, after: $after) {
+      pageInfo{
+        hasNextPage
+        endCursor
+        startCursor
+      }
+      edges {
+        node {
+          title
+          totalLikes
+          summary
+          id
+          tmdbId
+          cover
+          userResponse{
+            like
+          }
+        }
+      }
+    }
+  }
+}

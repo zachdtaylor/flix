@@ -1,30 +1,9 @@
 import 'package:flutter/material.dart';
 
-class VoteBar extends StatefulWidget {
-  VoteBar({Key key}) : super(key: key);
+class VoteBar extends StatelessWidget {
+  VoteBar({Key key, this.liked}) : super(key: key);
 
-  @override
-  _VoteBarState createState() => _VoteBarState();
-}
-
-class _VoteBarState extends State<VoteBar> {
-
-  bool _liked = false;
-  bool _disliked = false;
-
-  void _like() {
-    setState(() {
-      _liked = true;
-      _disliked = false;
-    });
-  }
-
-  void _dislike() {
-    setState(() {
-      _liked = false;
-      _disliked = true;
-    });
-  }
+  final bool liked;
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +13,13 @@ class _VoteBarState extends State<VoteBar> {
     return Row(
       children: <Widget>[
         IconButton(
-          icon: Icon(Icons.thumb_up, color: _liked ? blue : black),
-          onPressed: _like,
+          icon: Icon(Icons.thumb_up, color: liked ? blue : black),
         ),
         IconButton(
-          icon: Icon(Icons.thumb_down, color: _disliked ? blue : black),
-          onPressed: _dislike,
+          icon: Icon(Icons.thumb_down, color: !liked ? blue : black),
         )
       ]
     );
   }
+
 }

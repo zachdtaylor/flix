@@ -1,0 +1,15 @@
+query movieDetails($tmdbId: ID) {
+  movie(tmdbId: $tmdbId) {
+    id
+    title
+    summary
+    cover
+    releaseDate
+    tmdbId
+    userResponse {
+      like
+    }
+    totalLikes
+    totalDislikes
+  }
+}

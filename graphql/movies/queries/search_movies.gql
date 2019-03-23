@@ -1,0 +1,8 @@
+query search($text: String){
+  searchMovies(text: $text) {
+    tmdbId
+    title
+    summary
+    releaseDate
+  }
+}

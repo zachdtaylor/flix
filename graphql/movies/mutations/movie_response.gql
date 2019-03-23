@@ -1,0 +1,11 @@
+mutation response($like: Boolean, tmdbId: ID) {
+  response(like: $like, tmdbId: $tmdbId) {
+    response {
+      like
+      movie {
+        totalLikes
+        totalDislikes
+      }
+    }
+  }
+}
