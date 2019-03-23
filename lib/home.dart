@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'screens/movie_screen/movie_screen.dart';
 import 'screens/my_movies_screen/my_movies_screen.dart';
 import 'screens/friends_screen/friends_screen.dart';
+import 'movie_search_delegate.dart';
 
 class Home extends StatefulWidget {
 
@@ -34,6 +35,12 @@ class _HomeState extends State<Home> {
           IconButton(
             icon: Icon(Icons.search, color: white),
             tooltip: "Search",
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: MovieSearchDelegate()
+              );
+            },
           )
         ],
       ),
