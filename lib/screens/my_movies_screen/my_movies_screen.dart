@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../widgets/movie_card.dart';
-import 'count_vote_bar.dart';
+import 'vote_bar.dart';
 
-class MovieScreen extends StatelessWidget {
+class MyMoviesScreen extends StatelessWidget {
+  Color white = Color(0xFFFFFFFF);
+  Color blue = Color(0xFF204CA0);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -14,19 +17,19 @@ class MovieScreen extends StatelessWidget {
         crossAxisSpacing: 10.0,
         children: <Widget>[
           MovieCard(
-            child: CountVoteBar(likes: 10, dislikes:30), 
+            child: VoteBar(), 
             imageUrl: "https://images-na.ssl-images-amazon.com/images/I/51poKKV63GL.jpg"
           ),
           MovieCard(
-            child: CountVoteBar(likes: 27, dislikes: 6),
+            child: VoteBar(),
             imageUrl: "https://m.media-amazon.com/images/M/MV5BZmUwNGU2ZmItMmRiNC00MjhlLTg5YWUtODMyNzkxODYzMmZlXkEyXkFqcGdeQXVyNTIzOTk5ODM@._V1_.jpg"
           ),
           MovieCard(
-            child: CountVoteBar(likes: 15, dislikes: 8),
+            child: VoteBar(),
             imageUrl: "https://m.media-amazon.com/images/M/MV5BMTE0YWFmOTMtYTU2ZS00ZTIxLWE3OTEtYTNiYzBkZjViZThiXkEyXkFqcGdeQXVyODMzMzQ4OTI@._V1_.jpg"
           ),
           MovieCard(
-            child: CountVoteBar(likes: 42, dislikes: 1),
+            child: VoteBar(),
             imageUrl: "http://cdn.collider.com/wp-content/uploads/2019/03/avengers-endgame-poster-405x600.jpg"
           )
         ]

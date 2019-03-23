@@ -11,6 +11,8 @@ class MovieCard extends StatefulWidget {
 }
 
 class _MovieCardState extends State<MovieCard> {
+  
+
   @override
   Widget build(BuildContext context) {
     return Center(

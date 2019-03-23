@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import './screens/movie_screen/movie_screen.dart';
+import 'home.dart';
 
 void main() => runApp(MyApp());
 
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       ),
     );
 
-    const Color primaryColor = Color(0xFF204CA0);
+    const Color primaryColor = Color(0xFF2B2B2B);//Color(0xFF204CA0);
     const Color secondaryColor = Color(0xFF6B727C);
     final ColorScheme colorScheme = const ColorScheme.dark().copyWith(
       primary: primaryColor,
@@ -45,8 +45,8 @@ class MyApp extends StatelessWidget {
           primaryColorLight: secondaryColor,
           buttonColor: primaryColor,
           indicatorColor: Colors.white,
-          // toggleableActiveColor: const Color(0xFF6997DF),
-          accentColor: secondaryColor,
+          toggleableActiveColor: const Color(0xFF6997DF),
+          accentColor: Color(0xFF204CA0),
           // canvasColor: const Color(0xFF202124),
           scaffoldBackgroundColor: const Color(0xFF202124),
           backgroundColor: const Color(0xFF2B2B2B),
@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
             textTheme: ButtonTextTheme.primary,
           ),
         ),
-        home: MovieScreen(),
+        home: Home(),
         debugShowCheckedModeBanner: false
       )
     );
