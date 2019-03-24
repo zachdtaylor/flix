@@ -1,11 +1,31 @@
 import 'package:flutter/material.dart';
 
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'dart:async';
+
 class MovieSearchDelegate extends SearchDelegate {
+  List<dynamic> _movies = [];
+  ScrollController _controller;
+  Timer _debounce;
+
+  _search(BuildContext context, String searchText) async {
+    QueryResult result = await GraphQLProvider.of(context).value.query(
+      QueryOptions(
+        document: await rootBundle.loadString('graphql/movies/queries/search_movies.gql'),
+        variables: {
+          'text': searchText
+        }
+      )
+    );
+
+    Map<String, dynamic>  data = result.data;
+    return data['searchMovies'];
+  }
+
   @override
   ThemeData appBarTheme(BuildContext context) {
-    assert(context != null);
     final ThemeData theme = Theme.of(context);
-    assert(theme != null);
     return theme;
   }
 
