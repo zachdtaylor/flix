@@ -27,7 +27,7 @@ class MovieSearchCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: _goToMovieScreen(context),
+      onTap: () => _goToMovieScreen(context),
       child: Card(
         child: Flex(
           direction: Axis.horizontal,

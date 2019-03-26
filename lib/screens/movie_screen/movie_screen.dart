@@ -13,22 +13,37 @@ class MovieScreen extends StatefulWidget {
 }
 
 class _MovieScreenState extends State<MovieScreen> {
+  String imageUrl;
+  String summary;
+  String title;
 
-  _getInfo() {
+  _getInfo() async {
     QueryResult result = await GraphQLProvider.of(context).value.query(
       QueryOptions(
-        document: await rootBundle.loadString('graphql/movies/queries/paginated_movies.gql'),
+        document: await rootBundle.loadString('graphql/movies/queries/movie_details.gql'),
         variables: {
-          'first': _pageCount,
-          'after': _endCursor
+          'tmdbId': widget.tmdbId
         }
       )
     );
+
+    Map<String, dynamic> data = result.data;
+    print('<<<<<<<<<<<<<< data <<<<<<<<<<<<<');
+    print(widget.tmdbId);
+    print(data);
+    var movie = data['movie'];
+    setState(() {
+      imageUrl = movie['cover'];
+      summary = movie['summary'];
+      title = movie['title'];
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    _getInfo();
+    if (imageUrl == null && summary == null && title == null) {
+      _getInfo();
+    }
 
     return Column(
       children: <Widget>[
@@ -37,11 +52,20 @@ class _MovieScreenState extends State<MovieScreen> {
           height: 270,
           decoration: BoxDecoration(
             image: DecorationImage(
-              fit: BoxFit.fill,
-              image: NetworkImage(imageUrl)
+              fit: BoxFit.fitWidth,
+              image: imageUrl != null ? NetworkImage(imageUrl) : AssetImage('images/cover_unavailable.png')
             )
           ),
         ),
+        Card(
+          margin: EdgeInsets.all(20),
+          child: Column(
+            children: <Widget>[
+              Text("Summary", style: TextStyle(fontSize: 24)),
+              Text(summary != null ? summary : "No summary", softWrap: true)
+            ]
+          )
+        )
       ]
     );
   }

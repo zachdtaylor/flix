@@ -1,4 +1,4 @@
-query movieDetails($tmdbId: ID) {
+query movieDetails($tmdbId: ID!) {
   movie(tmdbId: $tmdbId) {
     id
     title
