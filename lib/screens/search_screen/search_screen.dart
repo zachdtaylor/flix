@@ -40,7 +40,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return FloatingSearchBar.builder(
-      itemCount: _movies.length,
+      itemCount: _movies != null ? _movies.length : 0,
       itemBuilder: (context, index) {
         var movie = _movies[index];
         var tmdbId = int.parse(movie['tmdbId']);

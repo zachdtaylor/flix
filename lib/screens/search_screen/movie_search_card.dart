@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../movie_screen/movie_screen.dart';
+import '../../utils.dart';
 
 class MovieSearchCard extends StatelessWidget {
   MovieSearchCard({Key key, this.tmdbId, this.title, this.imageUrl}) : super(key: key);
@@ -17,17 +17,10 @@ class MovieSearchCard extends StatelessWidget {
     }
   }
 
-  _goToMovieScreen(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => MovieScreen(tmdbId: tmdbId))
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _goToMovieScreen(context),
+      onTap: () => goToMovieScreen(context, tmdbId),
       child: Card(
         child: Flex(
           direction: Axis.horizontal,

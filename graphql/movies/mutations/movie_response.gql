@@ -1,8 +1,10 @@
-mutation response($like: Boolean, tmdbId: ID) {
+mutation response($like: Boolean!, $tmdbId: ID!) {
   response(like: $like, tmdbId: $tmdbId) {
     response {
+      id
       like
       movie {
+        id
         totalLikes
         totalDislikes
       }

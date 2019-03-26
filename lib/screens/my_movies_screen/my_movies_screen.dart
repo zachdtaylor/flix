@@ -84,7 +84,8 @@ class _MyMoviesScreenState extends State<MyMoviesScreen> {
           var movie = _movies[index];
           var cover = movie['cover'];
           var like = movie['userResponse']['like'];
-          return MovieCard(child: VoteBar(liked: like), imageUrl: cover);
+          var tmdbId = movie['tmdbId'];
+          return MovieCard(tmdbId: tmdbId, child: VoteBar(liked: like), imageUrl: cover);
         }
       )
     );
