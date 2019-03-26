@@ -1,36 +1,49 @@
 import 'package:flutter/material.dart';
-import '../../widgets/movie_card.dart';
-import 'count_vote_bar.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'dart:async';
 
-class MovieScreen extends StatelessWidget {
+class MovieScreen extends StatefulWidget {
+  MovieScreen({Key key, this.tmdbId}) : super(key: key);
+
+  final int tmdbId;
+
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: GridView.count(
-        crossAxisCount: 2,
-        childAspectRatio: 0.585,
-        padding: EdgeInsets.all(10.0),
-        mainAxisSpacing: 10.0,
-        crossAxisSpacing: 10.0,
-        children: <Widget>[
-          MovieCard(
-            child: CountVoteBar(likes: 10, dislikes:30), 
-            imageUrl: "https://images-na.ssl-images-amazon.com/images/I/51poKKV63GL.jpg"
-          ),
-          MovieCard(
-            child: CountVoteBar(likes: 27, dislikes: 6),
-            imageUrl: "https://m.media-amazon.com/images/M/MV5BZmUwNGU2ZmItMmRiNC00MjhlLTg5YWUtODMyNzkxODYzMmZlXkEyXkFqcGdeQXVyNTIzOTk5ODM@._V1_.jpg"
-          ),
-          MovieCard(
-            child: CountVoteBar(likes: 15, dislikes: 8),
-            imageUrl: "https://m.media-amazon.com/images/M/MV5BMTE0YWFmOTMtYTU2ZS00ZTIxLWE3OTEtYTNiYzBkZjViZThiXkEyXkFqcGdeQXVyODMzMzQ4OTI@._V1_.jpg"
-          ),
-          MovieCard(
-            child: CountVoteBar(likes: 42, dislikes: 1),
-            imageUrl: "http://cdn.collider.com/wp-content/uploads/2019/03/avengers-endgame-poster-405x600.jpg"
-          )
-        ]
+  _MovieScreenState createState() => _MovieScreenState();
+}
+
+class _MovieScreenState extends State<MovieScreen> {
+
+  _getInfo() {
+    QueryResult result = await GraphQLProvider.of(context).value.query(
+      QueryOptions(
+        document: await rootBundle.loadString('graphql/movies/queries/paginated_movies.gql'),
+        variables: {
+          'first': _pageCount,
+          'after': _endCursor
+        }
       )
     );
   }
+
+  @override
+  Widget build(BuildContext context) {
+    _getInfo();
+
+    return Column(
+      children: <Widget>[
+        Container(
+          width: MediaQuery.of(context).size.width,
+          height: 270,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.fill,
+              image: NetworkImage(imageUrl)
+            )
+          ),
+        ),
+      ]
+    );
+  }
+
 }

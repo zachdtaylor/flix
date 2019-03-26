@@ -7,11 +7,11 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
 
   final HttpLink httpLink = HttpLink(
-    uri: 'http://192.168.1.100:8000/graphql',
+    uri: 'http://10.0.1.14:8000/graphql',
   );
 
   final AuthLink authLink = AuthLink(
-    getToken: (() async => 'JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImthZGVuYmFybG93QGdtYWlsLmNvbSIsImV4cCI6MTU1MzM3MDY2Niwib3JpZ0lhdCI6MTU1MzM3MDM2Nn0.W3Y_7GssfjtLIoGvhmSewjFlbPxbM2AMPeRgsn_ILl4'),
+    getToken: (() async => 'JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImthZGVuYmFybG93QGdtYWlsLmNvbSIsImV4cCI6MTU1MzU2Njc1OCwib3JpZ0lhdCI6MTU1MzU2NjQ1OH0.gUq7gY-hVh2cHxDBKGmw3IuwHrFcXM8qG5U-ijD_Trg'),
   );
 
   @override

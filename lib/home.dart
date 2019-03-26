@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/movie_screen/movie_screen.dart';
+import 'screens/feed_screen/feed_screen.dart';
 import 'screens/my_movies_screen/my_movies_screen.dart';
 import 'screens/friends_screen/friends_screen.dart';
 import 'screens/search_screen/search_screen.dart';
@@ -12,8 +12,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
-  final List<Widget> _children = [MovieScreen(), MyMoviesScreen(), FriendsScreen()];
-  final List<String> _titles = ["Movies", "My Movies", "Friends"];
+  final List<Widget> _children = [FeedScreen(), MyMoviesScreen(), FriendsScreen()];
+  final List<String> _titles = ["Feed", "My Movies", "Friends"];
 
   void _onTabTapped(int index) {
     setState(() {

@@ -23,7 +23,6 @@ class _SearchScreenState extends State<SearchScreen> {
         }
       )
     );
-
     Map<String, dynamic>  data = result.data;
     setState(() {
       _movies = data['searchMovies'];
@@ -33,7 +32,7 @@ class _SearchScreenState extends State<SearchScreen> {
   _debounceSearch(String value) {
     print("<<<<<<<<<<<< $value <<<<<<<<<<<<<");
     if (_debounce?.isActive ?? false) _debounce.cancel();
-    _debounce =Timer(const Duration(milliseconds: 1000), () {
+    _debounce = Timer(const Duration(milliseconds: 1000), () {
       _search(value);
     });
   }
@@ -44,10 +43,17 @@ class _SearchScreenState extends State<SearchScreen> {
       itemCount: _movies.length,
       itemBuilder: (context, index) {
         var movie = _movies[index];
+        var tmdbId = int.parse(movie['tmdbId']);
         var cover = movie['cover'];
         var title = movie['title'];
-        return MovieSearchCard(title: title, imageUrl: cover);
+        return MovieSearchCard(tmdbId: tmdbId, title: title, imageUrl: cover);
       },
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
       trailing: IconButton(
         icon: Icon(Icons.clear),
         onPressed: () {},
@@ -56,5 +62,4 @@ class _SearchScreenState extends State<SearchScreen> {
       decoration: InputDecoration.collapsed(hintText: "Search...")
     );
   }
-
 }
