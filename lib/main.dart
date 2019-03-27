@@ -1,18 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'home.dart';
 import 'screens/login_screen/login_screen.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  Widget _homeScreen = LoginScreen();
+  bool loggedIn = (await SharedPreferences.getInstance()).getString('auth_token') != null;
+  if (loggedIn) {
+    _homeScreen = Home();
+  }
+  runApp(MyApp(home: _homeScreen));
+}
 
 class MyApp extends StatelessWidget {
+  final Widget home;
+
+  MyApp({
+    Key key,
+    this.home,
+  }) : super(key: key);
 
   final HttpLink httpLink = HttpLink(
-    uri: 'http://10.0.1.14:8000/graphql',
+    uri: 'http://192.168.1.100:8000/graphql',
   );
 
   final AuthLink authLink = AuthLink(
-    getToken: (() async => 'JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImthZGVuYmFybG93QGdtYWlsLmNvbSIsImV4cCI6MTU1MzU2Njc1OCwib3JpZ0lhdCI6MTU1MzU2NjQ1OH0.gUq7gY-hVh2cHxDBKGmw3IuwHrFcXM8qG5U-ijD_Trg'),
+    getToken: (() async {
+      String token = (await SharedPreferences.getInstance()).getString('auth_token');
+      if (token != null) {
+        return 'JWT ' + token;
+      } else {
+        return null;
+      }
+    })
   );
 
   @override
@@ -38,6 +59,10 @@ class MyApp extends StatelessWidget {
       client: client,
       child: MaterialApp(
         title: 'Flix',
+        routes: <String, WidgetBuilder>{
+          '/home': (BuildContext context) => Home(),
+          '/login': (BuildContext context) => LoginScreen()
+        },
         theme: ThemeData(
           brightness: Brightness.dark,
           accentColorBrightness: Brightness.dark,
@@ -57,8 +82,7 @@ class MyApp extends StatelessWidget {
             textTheme: ButtonTextTheme.primary,
           ),
         ),
-        // home: LoginScreen(),
-        home: Home(),
+        home: this.home,
         debugShowCheckedModeBanner: false
       )
     );
