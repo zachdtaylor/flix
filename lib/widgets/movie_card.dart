@@ -20,22 +20,28 @@ class _MovieCardState extends State<MovieCard> {
         color:Color(0xFFFFFFFF),
         child: Column(
           children: <Widget>[
-            GestureDetector(
-              onTap: () => goToMovieScreen(context, widget.tmdbId),
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: 270,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: NetworkImage(widget.imageUrl)
-                  )
-                ),
+            Expanded(
+              flex: 17,
+              child: GestureDetector(
+                onTap: () => goToMovieScreen(context, widget.tmdbId),
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: NetworkImage(widget.imageUrl)
+                    )
+                  ),
+                )
               )
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[ widget.child ],
+            Expanded(
+              flex: 3,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[ widget.child ],
+              )
             )
           ],
         )

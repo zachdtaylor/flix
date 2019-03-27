@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
   }) : super(key: key);
 
   final HttpLink httpLink = HttpLink(
-    uri: 'http://192.168.1.100:8000/graphql',
+    uri: 'https://flix-kdn.herokuapp.com/graphql',
   );
 
   final AuthLink authLink = AuthLink(

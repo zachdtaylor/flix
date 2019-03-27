@@ -42,6 +42,7 @@ class _MyMoviesScreenState extends State<MyMoviesScreen> {
     if (_hasNextPage) {
       QueryResult result = await GraphQLProvider.of(this.context).value.query(
         QueryOptions(
+          fetchPolicy: FetchPolicy.networkOnly,
           document: await rootBundle.loadString('graphql/movies/queries/paginated_movies.gql'),
           variables: {
             'first': _pageCount,
@@ -84,7 +85,7 @@ class _MyMoviesScreenState extends State<MyMoviesScreen> {
           var movie = _movies[index];
           var cover = movie['cover'];
           var like = movie['userResponse']['like'];
-          var tmdbId = movie['tmdbId'];
+          var tmdbId = int.parse(movie['tmdbId']);
           return MovieCard(tmdbId: tmdbId, child: VoteBar(liked: like), imageUrl: cover);
         }
       )
