@@ -5,13 +5,15 @@ class LoginTextInput extends StatelessWidget {
   final String hint;
   final bool password;
   final Function onChanged;
+  final bool error;
 
   LoginTextInput({
       Key key,
       this.label,
       this.hint,
       this.password=false,
-      this.onChanged
+      this.onChanged,
+      this.error=false
   }) : super(key: key);
 
   @override
@@ -30,7 +32,7 @@ class LoginTextInput extends StatelessWidget {
                     label.toUpperCase(),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Theme.of(context).accentColor,
+                      color: this.error ? Colors.red : Theme.of(context).accentColor,
                       fontSize: 16.0,
                     ),
                   ),
@@ -45,7 +47,7 @@ class LoginTextInput extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: Theme.of(context).accentColor,
+                  color: this.error ? Colors.red : Theme.of(context).accentColor,
                   width: 0.5,
                   style: BorderStyle.solid),
               ),

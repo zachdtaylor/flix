@@ -17,7 +17,7 @@ class LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 24),
+      margin: EdgeInsets.only(top: 16),
       width: MediaQuery.of(context).size.width * 0.9,
       decoration: BoxDecoration(
         color: this.backgroundColor,

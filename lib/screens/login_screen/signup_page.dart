@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'login_text_input.dart';
 import 'login_button.dart';
 import 'login_logo.dart';
+import 'login_error_text.dart';
 
 class SignupPage extends StatefulWidget {
   final Function onSignup;
@@ -16,9 +17,28 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage>{
-  String _name;
-  String _email;
-  String _password;
+  String _name = "";
+  String _email = "";
+  String _password = "";
+  bool _error = false;
+  String _errorMessage = "";
+
+  _signupPressed() async {
+    if (_name == "" || _email == "" || _password == ""){
+      setState(() {
+        _error = true;
+        _errorMessage = "All fields are required";
+      });
+      return;
+    }
+    bool success = widget.onSignup(name: _name, email: _email, password: _password);
+    if (!success){
+      setState(() {
+        _error = true;
+        _errorMessage = "Failed to create account - Contact Support";
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +69,10 @@ class _SignupPageState extends State<SignupPage>{
                 LoginTextInput(
                   label: 'Your Name',
                   hint: 'First Last',
+                  error: _error,
                   onChanged: (value) => {
                     setState(() {
+                      _error = false;
                       _name = value;
                     })
                   }
@@ -58,8 +80,10 @@ class _SignupPageState extends State<SignupPage>{
                 LoginTextInput(
                   label: 'Email Address',
                   hint: 'example@email.com',
+                  error: _error,
                   onChanged: (value) => {
                     setState(() {
+                      _error = false;
                       _email = value;
                     })
                   }
@@ -68,18 +92,21 @@ class _SignupPageState extends State<SignupPage>{
                   label: 'Password',
                   hint: 'password',
                   password: true,
+                  error: _error,
                   onChanged: (value) => {
                     setState(() {
+                      _error = false;
                       _password = value;
                     })
                   }
                 ),
+                LoginErrorText(text: _errorMessage, error: _error),
                 Container(
                   margin: EdgeInsets.only(top: 32),
                   child: LoginButton(
                     text: 'Signup',
                     backgroundColor: Theme.of(context).accentColor,
-                    onPress: () => widget.onSignup(name: _name, email: _email, password: _password)
+                    onPress: () => { _signupPressed() }
                   )
                 )
               ]
