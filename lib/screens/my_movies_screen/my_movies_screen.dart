@@ -71,7 +71,7 @@ class _MyMoviesScreenState extends State<MyMoviesScreen> {
       _queryMovies();
     }
     return Container(
-      child: GridView.builder(
+      child: _movies.isEmpty ? Center(child: CircularProgressIndicator(strokeWidth: 3,)) : GridView.builder(
         controller: _controller,
         itemCount: _movies.length,
         gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
