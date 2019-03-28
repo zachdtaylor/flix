@@ -69,7 +69,11 @@ class _LoginPageState extends State<LoginPage>{
                   child: LoginButton(
                     text: 'Login',
                     backgroundColor: Theme.of(context).accentColor,
-                    onPress: () => widget.onLogin(username: _username, password: _password)
+                    onPress: () {
+                      print("<<<<<<<<<<<<< login pressed <<<<<<<<<<<<<<<");
+                      widget.onLogin(username: _username, password: _password)
+                      .then((val) => print("<<<<<<<<<<<<< login: $val <<<<<<<<<<<<"));
+                    }
                   )
                 )
               ]

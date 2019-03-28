@@ -11,7 +11,8 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  List<dynamic> _movies = [];
+  bool loading = false;
+  List<dynamic> _movies;
   Timer _debounce;
 
   _search(String searchText) async {
@@ -26,11 +27,15 @@ class _SearchScreenState extends State<SearchScreen> {
     Map<String, dynamic>  data = result.data;
     setState(() {
       _movies = data['searchMovies'];
+      loading = false;
     });
   }
 
   _debounceSearch(String value) {
-    print("<<<<<<<<<<<< $value <<<<<<<<<<<<<");
+    setState(() {
+      loading = true;
+      _movies = null;
+    });
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 1000), () {
       _search(value);
@@ -39,23 +44,36 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FloatingSearchBar.builder(
-      itemCount: _movies != null ? _movies.length : 0,
-      itemBuilder: (context, index) {
-        var movie = _movies[index];
-        var tmdbId = int.parse(movie['tmdbId']);
-        var cover = movie['cover'];
-        var title = movie['title'];
-        return MovieSearchCard(tmdbId: tmdbId, title: title, imageUrl: cover);
-      },
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back),
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-      ),
-      onChanged: (String value) => _debounceSearch(value),
-      decoration: InputDecoration.collapsed(hintText: "Search...")
+    return Stack(
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.01),
+          child: FloatingSearchBar.builder(
+            itemCount: _movies != null ? _movies.length : 0,
+            itemBuilder: (context, index) {
+              var movie = _movies[index];
+              var tmdbId = int.parse(movie['tmdbId']);
+              var cover = movie['cover'];
+              var title = movie['title'];
+              return MovieSearchCard(tmdbId: tmdbId, title: title, imageUrl: cover);
+            },
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            onChanged: (String value) => _debounceSearch(value),
+            decoration: InputDecoration.collapsed(hintText: "Search...")
+          )
+        ),
+        Center(
+          child: loading ? CircularProgressIndicator(strokeWidth: 3) : null
+        ),
+        Center(
+          child: (_movies != null && _movies.isEmpty) ? Text("No results", style: Theme.of(context).textTheme.title) : null
+        )
+      ]
     );
   }
 }

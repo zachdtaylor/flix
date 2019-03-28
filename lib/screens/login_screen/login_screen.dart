@@ -14,6 +14,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
 
   Future<bool> _login({String username, String password}) async {
+    print("<<<<<<<<<<<<< in login <<<<<<<<<<<<<<<");
     QueryResult result = await GraphQLProvider.of(context).value.mutate (
       MutationOptions(
         document: await rootBundle.loadString('graphql/users/mutations/login.gql'),
@@ -23,6 +24,10 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       )
     );
+    print("<<<<<<<<<<<<< errors <<<<<<<<<<<<");
+    print(result.errors);
+    print("<<<<<<<<<<<<< data <<<<<<<<<<<<<<");
+    print(result.data);
     if (result.errors != null && result.errors.length > 0) {
       return false;
     } else {

@@ -72,7 +72,7 @@ class _MovieScreenState extends State<MovieScreen> {
     Color white = Color(0xFFFFFFFF);
     Color blue = Theme.of(context).accentColor;
 
-    return Column(
+    return ListView(
       children: <Widget>[
         Container(
           width: MediaQuery.of(context).size.width,
