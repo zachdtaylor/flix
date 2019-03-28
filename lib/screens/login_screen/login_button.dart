@@ -5,6 +5,7 @@ class LoginButton extends StatelessWidget {
   final Function onPress;
   final Color backgroundColor;
   final Color textColor;
+  final bool loading;
 
   LoginButton({
       Key key,
@@ -12,6 +13,7 @@ class LoginButton extends StatelessWidget {
       this.onPress,
       this.backgroundColor,
       this.textColor=Colors.white,
+      this.loading=false
   }) : super(key: key);
 
   @override
@@ -24,8 +26,11 @@ class LoginButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(30.0)
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Expanded(
+          Container(
+            height: MediaQuery.of(context).size.height * 0.085,
             child: FlatButton(
               onPressed: this.onPress,
               child: Container(
@@ -36,15 +41,19 @@ class LoginButton extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Expanded(
-                      child: Text(
+                    Container(
+                      child: !loading ? Text(
                         this.text.toUpperCase(),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: this.textColor,
                           fontWeight: FontWeight.bold
-                        ),
-                      ),
+                        )
+                      ) :
+                      SizedBox(
+                        child: CircularProgressIndicator(strokeWidth: 3, valueColor: AlwaysStoppedAnimation<Color>(textColor)),
+                        width: 20,
+                      )
                     ),
                   ],
                 ),
