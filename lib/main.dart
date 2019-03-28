@@ -1,18 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'home.dart';
 import 'screens/login_screen/login_screen.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  Widget _homeScreen = LoginScreen();
+  bool loggedIn = (await SharedPreferences.getInstance()).getString('auth_token') != null;
+  if (loggedIn) {
+    _homeScreen = Home();
+  }
+  runApp(MyApp(home: _homeScreen));
+}
 
 class MyApp extends StatelessWidget {
+  final Widget home;
+
+  MyApp({
+    Key key,
+    this.home,
+  }) : super(key: key);
 
   final HttpLink httpLink = HttpLink(
     uri: 'https://flix-kdn.herokuapp.com/graphql',
   );
 
   final AuthLink authLink = AuthLink(
-    getToken: (() async => 'JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InRhZGVtbzFAdGVzdC5jb20iLCJleHAiOjE1NTM2MjA1NDksIm9yaWdJYXQiOjE1NTM2MjAyNDl9.Jjl_Xxe_ONBl4A82BT6xSFzoxjRJIiO55lzYAW7zEsI'),
+    getToken: (() async {
+      String token = (await SharedPreferences.getInstance()).getString('auth_token');
+      if (token != null) {
+        return 'JWT ' + token;
+      } else {
+        return null;
+      }
+    })
   );
 
   @override
@@ -38,6 +59,10 @@ class MyApp extends StatelessWidget {
       client: client,
       child: MaterialApp(
         title: 'Flix',
+        routes: <String, WidgetBuilder>{
+          '/home': (BuildContext context) => Home(),
+          '/login': (BuildContext context) => LoginScreen()
+        },
         theme: ThemeData(
           brightness: Brightness.dark,
           accentColorBrightness: Brightness.dark,
@@ -57,8 +82,7 @@ class MyApp extends StatelessWidget {
             textTheme: ButtonTextTheme.primary,
           ),
         ),
-        // home: LoginScreen(),
-        home: Home(),
+        home: this.home,
         debugShowCheckedModeBanner: false
       )
     );
