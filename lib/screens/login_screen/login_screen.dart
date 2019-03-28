@@ -24,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
       )
     );
     if (result.errors != null && result.errors.length > 0) {
-      return false;
+     return false;
     } else {
       Map<String, dynamic> data = result.data['tokenAuth'];
       if (data['token'] != null) {
@@ -50,9 +50,8 @@ class _LoginScreenState extends State<LoginScreen> {
     if (result.errors != null && result.errors.length > 0) {
       return false;
     } else {
-      _login(username: email, password: password);
+     return await _login(username: email, password: password);
     }
-    return true;
   }
 
   _gotoLogin() {
