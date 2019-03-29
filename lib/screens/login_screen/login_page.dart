@@ -19,6 +19,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage>{
   String _username = "";
   String _password = "";
+  bool _loading = false;
   bool _error = false;
   String _errorMessage = "";
 
@@ -30,7 +31,15 @@ class _LoginPageState extends State<LoginPage>{
       });
       return;
     }
+
+    setState(() {
+      _loading = true;
+    });
     bool success = await widget.onLogin(username: _username, password: _password);
+    setState(() {
+      _loading = false;
+    });
+
     if (!success){
       setState(() {
         _error = true;
@@ -93,6 +102,7 @@ class _LoginPageState extends State<LoginPage>{
                   margin: EdgeInsets.only(top: 32),
                   child: LoginButton(
                     text: 'Login',
+                    loading: _loading,
                     backgroundColor: Theme.of(context).accentColor,
                     onPress: () => { _loginPressed() }
                   )

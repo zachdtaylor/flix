@@ -20,6 +20,7 @@ class _SignupPageState extends State<SignupPage>{
   String _name = "";
   String _email = "";
   String _password = "";
+  bool _loading = false;
   bool _error = false;
   String _errorMessage = "";
 
@@ -31,7 +32,15 @@ class _SignupPageState extends State<SignupPage>{
       });
       return;
     }
+
+    setState(() {
+      _loading = true;
+    });
     bool success = widget.onSignup(name: _name, email: _email, password: _password);
+    setState(() {
+      _loading = false;
+    });
+
     if (!success){
       setState(() {
         _error = true;
@@ -105,6 +114,7 @@ class _SignupPageState extends State<SignupPage>{
                   margin: EdgeInsets.only(top: 32),
                   child: LoginButton(
                     text: 'Signup',
+                    loading: _loading,
                     backgroundColor: Theme.of(context).accentColor,
                     onPress: () => { _signupPressed() }
                   )
