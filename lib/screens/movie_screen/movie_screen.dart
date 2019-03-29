@@ -29,10 +29,9 @@ class _MovieScreenState extends State<MovieScreen> {
     );
 
     Map<String, dynamic> data = result.data;
-    print('<<<<<<<<<<<<<< data <<<<<<<<<<<<<');
-    print(widget.tmdbId);
-    print(data);
     var movie = data['movie'];
+    print("<<<<<<<<<<<< movie <<<<<<<<<<<<");
+    print(movie);
     setState(() {
       imageUrl = movie['cover'];
       summary = movie['summary'];
@@ -41,7 +40,8 @@ class _MovieScreenState extends State<MovieScreen> {
     });
   }
 
-  _submitResponse(bool like) async {
+  _submitResponse(like) async {
+    print("<<<<<<<<<<<<< clicked: $like <<<<<<<<<<<<<<");
     GraphQLProvider.of(context).value.mutate(
       MutationOptions(
         document: await rootBundle.loadString('graphql/movies/mutations/movie_response.gql'),
@@ -52,15 +52,23 @@ class _MovieScreenState extends State<MovieScreen> {
       )
     ).then(
       (result) {
-        print("<<<<<<<<<<<<<<, result <<<<<<<<<<<<<<");
-        print(result.data);
         _getInfo();
       }
     );
   }
 
   bool _liked() {
-    return (userResponse != null && userResponse['like'] == true) ? true : false;
+    if (userResponse != null) {
+      return userResponse['like'] == true;
+    }
+    return false;
+  }
+
+  bool _disliked() {
+    if (userResponse != null) {
+      return userResponse['like'] == false;
+    }
+    return false;
   }
 
   @override
@@ -72,75 +80,70 @@ class _MovieScreenState extends State<MovieScreen> {
     Color white = Color(0xFFFFFFFF);
     Color blue = Theme.of(context).accentColor;
 
-    return ListView(
-      children: <Widget>[
-        Stack(
-          children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height*0.55,
-              alignment: Alignment.topLeft,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.fitWidth,
-                  alignment: Alignment.topCenter,
-                  image: imageUrl != null ? NetworkImage(imageUrl) : AssetImage('images/cover_unavailable.png')
+    return imageUrl == null ? Center(child:CircularProgressIndicator(strokeWidth: 3,)) : Scaffold(
+      body: ListView(
+        children: <Widget>[
+          Stack(
+            children: <Widget>[
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height*0.55,
+                alignment: Alignment.topLeft,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.fitWidth,
+                    alignment: Alignment.topCenter,
+                    image: NetworkImage(imageUrl)
+                  )
+                )
+              ),
+              Positioned(
+                left: MediaQuery.of(context).size.width*0.01,
+                top:MediaQuery.of(context).size.height*0.01,
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: () => Navigator.of(context).pop(),
+                )
+              ),
+              Positioned(
+                right: MediaQuery.of(context).size.width*0.01,
+                top:MediaQuery.of(context).size.height*0.01,
+                child: Column(
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.thumb_up, color: _liked() ? blue : white),
+                      onPressed: () => _submitResponse(_liked() ? null : true)
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.thumb_down, color: _disliked() ? blue : white),
+                      onPressed: () => _submitResponse(_disliked() ? null : false)
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.share, color: white)
+                    )
+                  ]
                 )
               )
-            ),
-            Positioned(
-              left: MediaQuery.of(context).size.width*0.01,
-              top:MediaQuery.of(context).size.height*0.01,
-              child: IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () => Navigator.of(context).pop(),
+            ]
+          ),
+          Card(
+            margin: EdgeInsets.fromLTRB(5, 10, 5, 5),
+            child: Container(
+              padding: EdgeInsets.all(15),
+              child: Column(
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(title, style: TextStyle(fontSize: 24)),
+                  ),
+                  SizedBox(height:MediaQuery.of(context).size.height*0.015),
+                  Text(summary, softWrap: true)
+                ]
               )
-            ),
-            Positioned(
-              right: MediaQuery.of(context).size.width*0.01,
-              top:MediaQuery.of(context).size.height*0.01,
-              child: IconButton(
-                icon: Icon(Icons.thumb_up),
-                onPressed: () => _submitResponse(true)
-              )
-            )
-          ]
-        ),
-        Card(
-          margin: EdgeInsets.fromLTRB(5, 10, 5, 5),
-          child: Container(
-            padding: EdgeInsets.all(15),
-            child: Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(title != null ? title : "No title", style: TextStyle(fontSize: 24)),
-                ),
-                SizedBox(height:MediaQuery.of(context).size.height*0.015),
-                Text(summary != null ? summary : "No summary", softWrap: true)
-              ]
             )
           )
-        ),
-        Card(
-          margin: EdgeInsets.all(5),
-          child: Container(
-            padding: EdgeInsets.all(5),
-            child: Row(
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.thumb_up, color: _liked() ? blue : white),
-                  onPressed: () => _submitResponse(true),
-                ),
-                IconButton(
-                  icon: Icon(Icons.thumb_down, color: _liked() ? white : blue),
-                  onPressed: () => _submitResponse(false),
-                )
-              ]
-            )
-          )
-        )
-      ]
+        ]
+      )
     );
   }
 }

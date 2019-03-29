@@ -18,6 +18,7 @@ class _MyMoviesScreenState extends State<MyMoviesScreen> {
   String _endCursor;
   bool _hasNextPage = true;
   int _pageCount = 24;
+  bool _hasQueried = false;
   List<dynamic> _movies = [];
   ScrollController _controller;
   Timer _debounce;
@@ -57,38 +58,49 @@ class _MyMoviesScreenState extends State<MyMoviesScreen> {
       print(data['user']['movies']['pageInfo']);
       if (newData.length >= 0) {
         setState(() {
-            _endCursor = data['user']['movies']['pageInfo']['endCursor'];
-            _hasNextPage = data['user']['movies']['pageInfo']['hasNextPage'];
-            _movies.addAll(newData);
+          _hasQueried = true;
+          _endCursor = data['user']['movies']['pageInfo']['endCursor'];
+          _hasNextPage = data['user']['movies']['pageInfo']['hasNextPage'];
+          _movies.addAll(newData);
         });
       }
     }
   }
 
+  Widget _child() {
+    if (!_hasQueried) {
+      return Center(child: CircularProgressIndicator(strokeWidth: 3,));
+    } else if (_movies.isEmpty) {
+      return Center(child: Text("You haven't saved any movies yet!"));
+    }
+
+    return GridView.builder(
+      controller: _controller,
+      itemCount: _movies != null ? _movies.length : 0,
+      gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 0.585,
+        mainAxisSpacing: 10.0,
+        crossAxisSpacing: 10.0,
+      ),
+      padding: EdgeInsets.all(10.0),
+      itemBuilder: (context, index) {
+        var movie = _movies[index];
+        var cover = movie['cover'];
+        var like = movie['userResponse']['like'];
+        var tmdbId = int.parse(movie['tmdbId']);
+        return MovieCard(tmdbId: tmdbId, child: VoteBar(liked: like), imageUrl: cover);
+      }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (_movies.length == 0 && _hasNextPage) {
+    if (_hasNextPage || !_hasQueried) {
       _queryMovies();
     }
     return Container(
-      child: _movies.isEmpty ? Center(child: CircularProgressIndicator(strokeWidth: 3,)) : GridView.builder(
-        controller: _controller,
-        itemCount: _movies.length,
-        gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 0.585,
-          mainAxisSpacing: 10.0,
-          crossAxisSpacing: 10.0,
-        ),
-        padding: EdgeInsets.all(10.0),
-        itemBuilder: (context, index) {
-          var movie = _movies[index];
-          var cover = movie['cover'];
-          var like = movie['userResponse']['like'];
-          var tmdbId = int.parse(movie['tmdbId']);
-          return MovieCard(tmdbId: tmdbId, child: VoteBar(liked: like), imageUrl: cover);
-        }
-      )
+      child: _child()
     );
   }
 }
