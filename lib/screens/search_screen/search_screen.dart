@@ -59,9 +59,7 @@ class _SearchScreenState extends State<SearchScreen> {
             },
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              onPressed: () => Navigator.of(context).pop()
             ),
             onChanged: (String value) => _debounceSearch(value),
             decoration: InputDecoration.collapsed(hintText: "Search...")

@@ -74,17 +74,37 @@ class _MovieScreenState extends State<MovieScreen> {
 
     return ListView(
       children: <Widget>[
-        Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height*0.55,
-          alignment: Alignment.topLeft,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.fitWidth,
-              alignment: Alignment.topCenter,
-              image: imageUrl != null ? NetworkImage(imageUrl) : AssetImage('images/cover_unavailable.png')
+        Stack(
+          children: <Widget>[
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height*0.55,
+              alignment: Alignment.topLeft,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.fitWidth,
+                  alignment: Alignment.topCenter,
+                  image: imageUrl != null ? NetworkImage(imageUrl) : AssetImage('images/cover_unavailable.png')
+                )
+              )
+            ),
+            Positioned(
+              left: MediaQuery.of(context).size.width*0.01,
+              top:MediaQuery.of(context).size.height*0.01,
+              child: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            ),
+            Positioned(
+              right: MediaQuery.of(context).size.width*0.01,
+              top:MediaQuery.of(context).size.height*0.01,
+              child: IconButton(
+                icon: Icon(Icons.thumb_up),
+                onPressed: () => _submitResponse(true)
+              )
             )
-          )
+          ]
         ),
         Card(
           margin: EdgeInsets.fromLTRB(5, 10, 5, 5),
