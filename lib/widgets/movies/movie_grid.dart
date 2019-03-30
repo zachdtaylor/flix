@@ -101,14 +101,7 @@ class _MovieGridState extends State<MovieGrid> {
 
   Widget _child() {
     Widget view;
-    if (_loading) {
-      view = SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: Center(
-          child: CircularProgressIndicator(strokeWidth: 4,)
-        )
-      );
-     } else if (_hasQueried && _movies.isEmpty) {
+    if (_hasQueried && _movies.isEmpty) {
       view = SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         child: Container(
@@ -140,11 +133,9 @@ class _MovieGridState extends State<MovieGrid> {
       );
     }
 
-    return Center(
-      child: RefreshIndicator(
-        onRefresh: _refresh,
-        child: view
-      )
+    return _loading ? Center(child: CircularProgressIndicator(strokeWidth: 4,)) : RefreshIndicator(
+      onRefresh: _refresh,
+      child: view
     );
   }
 
@@ -158,3 +149,13 @@ class _MovieGridState extends State<MovieGrid> {
     );
   }
 }
+
+
+    // if (_loading) {
+    //   view = SingleChildScrollView(
+    //     physics: const AlwaysScrollableScrollPhysics(),
+    //     child: Center(
+    //       child: CircularProgressIndicator(strokeWidth: 4,)
+    //     )
+    //   );
+    //  } else 
