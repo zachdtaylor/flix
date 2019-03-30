@@ -62,7 +62,6 @@ class _MovieGridState extends State<MovieGrid> {
           }
         )
       );
-
       Map<String, dynamic>  data = result.data;
       print('<<<<<<<<<<<<<<<<<<<<<<<,');
       print(data);
