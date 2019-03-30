@@ -1,0 +1,16 @@
+query userDetails($id: ID, $first: Int, $after: String) {
+  user(id: $id) {
+    userId
+    name
+    email
+    following
+    followeeCount
+    followerCount
+    movies(first: $first, after: $after) {
+      cover
+      userResponse{
+        like
+      }
+    }
+  }
+}

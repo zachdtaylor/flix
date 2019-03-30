@@ -1,0 +1,13 @@
+query recent_movies($first: Int, $after: String){
+  recentMovies(first:$first, after: $after) {
+    edges {
+      node {
+        tmdbId
+        title
+        cover
+        followeeLikes
+        followeeDislikes
+      }
+    }
+  }
+}

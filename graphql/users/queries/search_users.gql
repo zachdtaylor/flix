@@ -1,0 +1,10 @@
+query searchUsers($text: String!, $first: Int, $after: String) {
+  searchUsers(text: $text, first: $first, after: $after){
+    edges{
+      node{
+        userId
+        name
+      }
+    }
+  }
+}
