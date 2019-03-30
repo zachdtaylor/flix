@@ -9,11 +9,13 @@ class LoginTextInput extends StatelessWidget {
   final Function onChanged;
   final bool error;
   final FocusNode focus;
+  final bool autofocus;
 
   LoginTextInput({
       Key key,
       this.label,
       this.hint,
+      this.autofocus=false,
       this.onEditingComplete,
       this.action=TextInputAction.next,
       this.password=false,
@@ -65,6 +67,7 @@ class LoginTextInput extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   child: TextField(
+                    autofocus: autofocus,
                     focusNode: focus,
                     textInputAction: action,
                     onEditingComplete: onEditingComplete,

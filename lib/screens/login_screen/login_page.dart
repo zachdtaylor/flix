@@ -78,6 +78,7 @@ class _LoginPageState extends State<LoginPage>{
                 LoginTextInput(
                   label: 'Email Address',
                   hint: 'example@email.com',
+                  autofocus: true,
                   error: _error,
                   onEditingComplete: () => FocusScope.of(context).requestFocus(passwordNode),
                   onChanged: (value) => {
