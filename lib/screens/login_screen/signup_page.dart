@@ -80,6 +80,7 @@ class _SignupPageState extends State<SignupPage>{
                 LoginTextInput(
                   label: 'Your Name',
                   hint: 'First Last',
+                  autofocus: true,
                   onEditingComplete: () => FocusScope.of(context).requestFocus(emailNode),
                   error: _error,
                   onChanged: (value) => {
