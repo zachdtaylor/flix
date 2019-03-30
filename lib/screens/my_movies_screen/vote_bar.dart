@@ -15,11 +15,11 @@ class VoteBar extends StatelessWidget {
       children: <Widget>[
         IconButton(
           icon: Icon(Icons.thumb_up, color: liked ? blue : black),
-          onPressed: onChange(liked ? null : true),
+          onPressed: () => onChange(liked ? null : true),
         ),
         IconButton(
           icon: Icon(Icons.thumb_down, color: !liked ? blue : black),
-          onPressed: onChange(liked ? false : null),
+          onPressed: () => onChange(liked ? false : null),
         )
       ]
     );
