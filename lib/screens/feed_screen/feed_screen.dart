@@ -8,8 +8,8 @@ class FeedScreen extends StatelessWidget {
     return MovieGrid(
       query: 'graphql/movies/queries/recent_movies.gql',
       emptyText: 'Looking for new movies? When someone you\'re following rates a movie, you\'ll see it here.',
-      buildVoteBar: (movie, onChnage) {
-        return CountVoteBar(movie: movie);
+      buildVoteBar: (movie, onChange) {
+        return CountVoteBar(movie: movie, onChange: onChange);
       },
       resultData: (data) {
         var moviesData = data['recentMovies']['edges'];

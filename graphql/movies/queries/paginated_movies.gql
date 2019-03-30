@@ -14,7 +14,7 @@ query paginatedMovies($first: Int, $after: String) {
           id
           tmdbId
           cover
-          userResponse{
+          userResponse {
             like
           }
         }

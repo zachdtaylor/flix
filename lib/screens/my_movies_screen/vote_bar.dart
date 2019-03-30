@@ -11,13 +11,13 @@ class VoteBar extends StatefulWidget {
 }
 
 class _VoteBarState extends State<VoteBar> {
-  bool liked;
-  bool disliked;
+  bool _liked;
+  bool _disliked;
 
   @override
   void initState() {
-    liked = widget.liked;
-    disliked = !widget.liked;
+    _liked = widget.liked;
+    _disliked = !widget.liked;
     super.initState();
   }
 
@@ -29,22 +29,22 @@ class _VoteBarState extends State<VoteBar> {
     return Row(
       children: <Widget>[
         IconButton(
-          icon: Icon(Icons.thumb_up, color: liked ? blue : black),
+          icon: Icon(Icons.thumb_up, color: _liked ? blue : black),
           onPressed: () {
-            widget.onChange(liked ? null : true);
+            widget.onChange(_liked ? null : true);
             setState(() {
-              liked = liked ? false : true;
-              disliked = false;
+              _liked = _liked ? false : true;
+              _disliked = false;
             });
           }
         ),
         IconButton(
-          icon: Icon(Icons.thumb_down, color: disliked ? blue : black),
+          icon: Icon(Icons.thumb_down, color: _disliked ? blue : black),
           onPressed: () {
-            widget.onChange(disliked ? null : false);
+            widget.onChange(_disliked ? null : false);
             setState(() {
-              liked = false;
-              disliked = disliked ? false : true;
+              _liked = false;
+              _disliked = _disliked ? false : true;
             });
           }
         )

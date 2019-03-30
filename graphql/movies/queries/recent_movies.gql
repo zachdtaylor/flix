@@ -12,6 +12,9 @@ query recentMovies($first: Int, $after: String){
         cover
         followeeLikes
         followeeDislikes
+        userResponse {
+          like
+        }
       }
     }
   }

@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flix_list/util/utils.dart';
 
 class CountVoteBar extends StatefulWidget {
-  CountVoteBar({Key key, @required this.movie}) : super(key: key);
+  CountVoteBar({Key key, @required this.movie, @required this.onChange}) : super(key: key);
   final movie;
+  final onChange;
 
   @override
   _CountVoteBarState createState() => _CountVoteBarState();
 }
 
 class _CountVoteBarState extends State<CountVoteBar> {
-  bool _liked = false;
-  bool _disliked = false;
+  bool _liked;
+  bool _disliked;
   int _likes = 0;
   int _dislikes = 0;
 
@@ -19,34 +20,42 @@ class _CountVoteBarState extends State<CountVoteBar> {
   initState(){
     _liked = liked(widget.movie['userResponse']);
     _disliked = disliked(widget.movie['userResponse']);
-    _likes = widget.movie['followeeLikes'];
-    _dislikes = widget.movie['followeeDislikes'];
+    _likes = widget.movie['followeeLikes'] + (_liked ? 1 : 0);
+    _dislikes = widget.movie['followeeDislikes'] + (_disliked ? 1 : 0);
     super.initState();
   }
 
   void _like() {
-    if (!_liked) {
-      _likes += 1;
-    }
-    if (_disliked) {
-      _dislikes -= 1;
-    }
+    widget.onChange(_liked ? null : true);
     setState(() {
-      _liked = true;
-      _disliked = false;
+      if (!_liked) {
+        _likes += 1;
+        _liked = true;
+      } else {
+        _likes -= 1;
+        _liked = false;
+      }
+      if (_disliked) {
+        _dislikes -= 1;
+        _disliked = false;
+      }
     });
   }
 
   void _dislike() {
-    if (!_disliked) {
-      _dislikes += 1;
-    }
-    if (_liked) {
-      _likes -= 1;
-    }
+    widget.onChange(_disliked ? null : false);
     setState(() {
-      _liked = false;
-      _disliked = true;
+      if (!_disliked) {
+        _dislikes += 1;
+        _disliked = true;
+      } else {
+        _dislikes -= 1;
+        _disliked = false;
+      }
+      if (_liked) {
+        _likes -= 1;
+        _liked = false;
+      }
     });
   }
 
@@ -59,7 +68,7 @@ class _CountVoteBarState extends State<CountVoteBar> {
       children: <Widget>[
         IconButton(
           icon: Icon(Icons.thumb_up, color: _liked ? blue : black),
-          onPressed: _like,
+          onPressed: _like
         ),
         SizedBox(
           width: 18,
