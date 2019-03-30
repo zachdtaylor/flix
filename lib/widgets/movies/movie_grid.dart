@@ -138,9 +138,11 @@ class _MovieGridState extends State<MovieGrid> {
       );
     }
 
-    return RefreshIndicator(
-      onRefresh: _refresh,
-      child: view
+    return Center(
+      child: RefreshIndicator(
+        onRefresh: _refresh,
+        child: view
+      )
     );
   }
 
