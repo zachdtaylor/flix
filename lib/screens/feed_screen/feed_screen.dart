@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../widgets/movie_card.dart';
+import 'package:flix_list/widgets/movies/movie_card.dart';
 import 'count_vote_bar.dart';
 
 class FeedScreen extends StatelessWidget {
