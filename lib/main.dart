@@ -3,6 +3,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'home.dart';
 import 'screens/login_screen/login_screen.dart';
+import 'package:flutter/services.dart';
 
 void main() async {
   Widget _homeScreen = LoginScreen();
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
     final Link link = authLink.concat(httpLink);
 
@@ -72,7 +74,7 @@ class MyApp extends StatelessWidget {
           buttonColor: primaryColor,
           indicatorColor: Colors.white,
           toggleableActiveColor: const Color(0xFF6997DF),
-          accentColor: Color(0xFF204CA0),
+          accentColor: const Color(0xFF6997DF),
           // canvasColor: const Color(0xFF202124),
           scaffoldBackgroundColor: const Color(0xFF202124),
           backgroundColor: const Color(0xFF2B2B2B),

@@ -104,7 +104,9 @@ class _MovieGridState extends State<MovieGrid> {
     if (_loading) {
       view = SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
-        child: Center(child: CircularProgressIndicator(strokeWidth: 3,))
+        child: Center(
+          child: CircularProgressIndicator(strokeWidth: 4,)
+        )
       );
      } else if (_hasQueried && _movies.isEmpty) {
       view = SingleChildScrollView(

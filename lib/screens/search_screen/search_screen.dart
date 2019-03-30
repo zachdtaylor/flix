@@ -75,7 +75,7 @@ class _SearchScreenState extends State<SearchScreen> {
           )
         ),
         Center(
-          child: loading ? CircularProgressIndicator(strokeWidth: 3) : null
+          child: loading ? CircularProgressIndicator(strokeWidth: 4) : null
         ),
         Center(
           child: (_movies != null && _movies.isEmpty) ? Text("No results", style: Theme.of(context).textTheme.title) : null
