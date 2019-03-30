@@ -1,5 +1,5 @@
-query userDetails($id: ID, $first: Int, $after: String) {
-  user(id: $id) {
+query userDetails($userId: ID, $responseUserId: ID, $first: Int, $after: String) {
+  user(id: $userId) {
     userId
     name
     email
@@ -8,7 +8,7 @@ query userDetails($id: ID, $first: Int, $after: String) {
     followerCount
     movies(first: $first, after: $after) {
       cover
-      userResponse{
+      userResponse(userId: $responseUserId){
         like
       }
     }
