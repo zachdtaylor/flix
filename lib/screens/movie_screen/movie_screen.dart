@@ -17,20 +17,6 @@ class _MovieScreenState extends State<MovieScreen> {
   String summary;
   String title;
   Map<String, dynamic> userResponse;
-  double coverHeight = 0.8;
-  final controller = ScrollController();
-
-  @override
-  initState() {
-    super.initState();
-    controller.addListener(onScroll);
-  }
-
-  onScroll() {
-    setState(() {
-      coverHeight = controller.offset;
-    });
-  }
 
   _getInfo() async {
     QueryResult result = await GraphQLProvider.of(context).value.query(
@@ -42,7 +28,6 @@ class _MovieScreenState extends State<MovieScreen> {
         }
       )
     );
-
     Map<String, dynamic> data = result.data;
     var movie = data['movie'];
     print("<<<<<<<<<<<< movie <<<<<<<<<<<<");
@@ -73,7 +58,6 @@ class _MovieScreenState extends State<MovieScreen> {
       body: Stack(
         children: <Widget>[
           ListView(
-            controller: controller,
             children: <Widget>[
               Container(
                 width: MediaQuery.of(context).size.width,

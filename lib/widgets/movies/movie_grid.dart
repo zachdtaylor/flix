@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flix_list/widgets/movies/movie_card.dart';
-
+import 'package:flix_list/util/utils.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:async';
@@ -79,13 +79,21 @@ class _MovieGridState extends State<MovieGrid> {
     }
   }
 
+  _onResponseChange(like, tmdbId) {
+    submitResponse(GraphQLProvider.of(context), tmdbId, like, callback)
+  }
+
   Widget _child() {
     if (!_hasQueried) {
       return Center(child: CircularProgressIndicator(strokeWidth: 3,));
     } else if (_movies.isEmpty) {
-      return Center(child: Text(widget.emptyText));
+      return Container(
+        margin: EdgeInsets.all(32),
+        child: Center(
+          child: Text(widget.emptyText, textAlign: TextAlign.center,)
+        )
+      );
     }
-
     return GridView.builder(
       controller: _controller,
       itemCount: _movies != null ? _movies.length : 0,
@@ -100,7 +108,7 @@ class _MovieGridState extends State<MovieGrid> {
         var movie = _movies[index];
         var cover = movie['cover'];
         var tmdbId = int.parse(movie['tmdbId']);
-        return MovieCard(tmdbId: tmdbId, child: widget.buildVoteBar(movie), imageUrl: cover);
+        return MovieCard(tmdbId: tmdbId, child: widget.buildVoteBar(movie,  (like) => _onResponseChange(like, tmdbId)), imageUrl: cover);
       }
     );
   }

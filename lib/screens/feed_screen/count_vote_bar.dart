@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flix_list/util/utils.dart';
 
 class CountVoteBar extends StatefulWidget {
   CountVoteBar({Key key, @required this.movie}) : super(key: key);
@@ -16,6 +17,8 @@ class _CountVoteBarState extends State<CountVoteBar> {
 
   @override
   initState(){
+    _liked = liked(widget.movie['userResponse']);
+    _disliked = disliked(widget.movie['userResponse']);
     _likes = widget.movie['followeeLikes'];
     _dislikes = widget.movie['followeeDislikes'];
     super.initState();

@@ -8,8 +8,8 @@ class MyMoviesScreen extends StatelessWidget {
     return MovieGrid(
       query: 'graphql/movies/queries/paginated_movies.gql',
       emptyText: 'You haven\'t saved any movies yet!',
-      buildVoteBar: (movie) {
-        return VoteBar(liked: movie['userResponse']['like']);
+      buildVoteBar: (movie, onChange) {
+        return VoteBar(liked: movie['userResponse']['like'], onChange: onChange);
       },
       resultData: (data) {
         var moviesData = data['user']['movies']['edges'];

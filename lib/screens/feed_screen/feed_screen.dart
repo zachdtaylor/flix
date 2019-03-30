@@ -7,7 +7,7 @@ class FeedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MovieGrid(
       query: 'graphql/movies/queries/recent_movies.gql',
-      emptyText: 'You\'ll see the movies the people you follow are reacting to here',
+      emptyText: 'Looking for new movies? When someone you\'re following rates a movie, you\'ll see it here.',
       buildVoteBar: (movie) {
         return CountVoteBar(movie: movie);
       },
