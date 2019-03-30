@@ -21,7 +21,6 @@ dependencies:
   flutter:
     sdk: flutter
   graphql_flutter: ^1.0.0-beta
-  floating_search_bar: ^0.1.3
   shared_preferences: ^0.5.1+2
 
 dev_dependencies:

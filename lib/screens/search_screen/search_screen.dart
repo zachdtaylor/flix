@@ -1,4 +1,4 @@
-import 'package:floating_search_bar/floating_search_bar.dart';
+import 'package:flix_list/widgets/search/floating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -14,6 +14,7 @@ class _SearchScreenState extends State<SearchScreen> {
   bool loading = false;
   List<dynamic> _movies;
   Timer _debounce;
+  TextEditingController _textController = TextEditingController();
 
   _search(String searchText) async {
     QueryResult result = await GraphQLProvider.of(context).value.query(
@@ -49,6 +50,7 @@ class _SearchScreenState extends State<SearchScreen> {
         Container(
           padding: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.01),
           child: FloatingSearchBar.builder(
+            controller: _textController,
             itemCount: _movies != null ? _movies.length : 0,
             itemBuilder: (context, index) {
               var movie = _movies[index];
@@ -60,6 +62,13 @@ class _SearchScreenState extends State<SearchScreen> {
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () => Navigator.of(context).pop()
+            ),
+            trailing: IconButton(
+              icon: Icon(Icons.close),
+              onPressed: () {
+                _textController.clear();
+                _search("");
+              }
             ),
             onChanged: (String value) => _debounceSearch(value),
             decoration: InputDecoration.collapsed(hintText: "Search...")

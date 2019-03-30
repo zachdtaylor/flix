@@ -22,6 +22,7 @@ class _LoginPageState extends State<LoginPage>{
   bool _loading = false;
   bool _error = false;
   String _errorMessage = "";
+  FocusNode passwordNode = FocusNode();
 
   _loginPressed() async {
     if (_username == "" || _password == ""){
@@ -78,6 +79,7 @@ class _LoginPageState extends State<LoginPage>{
                   label: 'Email Address',
                   hint: 'example@email.com',
                   error: _error,
+                  onEditingComplete: () => FocusScope.of(context).requestFocus(passwordNode),
                   onChanged: (value) => {
                     setState(() {
                       _error = false;
@@ -90,6 +92,9 @@ class _LoginPageState extends State<LoginPage>{
                   hint: 'password',
                   password: true,
                   error: _error,
+                  focus: passwordNode,
+                  onEditingComplete: _loginPressed,
+                  action: TextInputAction.done,
                   onChanged: (value) => {
                     setState(() {
                       _error = false;
