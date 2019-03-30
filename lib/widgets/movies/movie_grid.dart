@@ -30,6 +30,7 @@ class _MovieGridState extends State<MovieGrid> {
   bool _hasNextPage = true;
   int _pageCount = 24;
   bool _hasQueried = false;
+  bool _loading = true;
   List<dynamic> _movies = [];
   ScrollController _controller;
   Timer _debounce;
@@ -52,6 +53,9 @@ class _MovieGridState extends State<MovieGrid> {
 
   _queryMovies() async {
     if (_hasNextPage) {
+      setState((){
+        _loading = true;
+      });
       QueryResult result = await GraphQLProvider.of(this.context).value.query(
         QueryOptions(
           fetchPolicy: FetchPolicy.networkOnly,
@@ -62,6 +66,10 @@ class _MovieGridState extends State<MovieGrid> {
           }
         )
       );
+      setState((){
+          _hasQueried=true;
+          _loading = false;
+      });
 
       Map<String, dynamic>  data = result.data;
       print('<<<<<<<<<<<<<<<<<<<<<<<,');
@@ -70,7 +78,6 @@ class _MovieGridState extends State<MovieGrid> {
       var pageData = widget.pageData(data);
       if (newData.length >= 0) {
         setState(() {
-            _hasQueried = true;
             _endCursor = pageData['endCursor'];
             _hasNextPage = pageData['hasNextPage'];
             _movies.addAll(newData);
@@ -93,9 +100,9 @@ class _MovieGridState extends State<MovieGrid> {
   }
 
   Widget _child() {
-    if (!_hasQueried) {
+    if (_loading) {
       return Center(child: CircularProgressIndicator(strokeWidth: 3,));
-    } else if (_movies.isEmpty) {
+    } else if (_hasQueried && _movies.isEmpty) {
       return Container(
         margin: EdgeInsets.all(32),
         child: Center(
