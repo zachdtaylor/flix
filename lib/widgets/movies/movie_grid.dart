@@ -87,7 +87,7 @@ class _MovieGridState extends State<MovieGrid> {
   }
 
   _onResponseChange(like, tmdbId) {
-    submitResponse(GraphQLProvider.of(context), tmdbId, like, _refresh);
+    submitResponse(GraphQLProvider.of(context), tmdbId, like, () {});
   }
 
   Future<void> _refresh() async {
