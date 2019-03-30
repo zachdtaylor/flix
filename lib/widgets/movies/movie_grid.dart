@@ -79,6 +79,15 @@ class _MovieGridState extends State<MovieGrid> {
     }
   }
 
+  Future<void> _refresh() async {
+    setState((){
+      _endCursor = null;
+      _movies = [];
+      _hasNextPage = true;
+    });
+    await _queryMovies();
+  }
+
   Widget _child() {
     if (!_hasQueried) {
       return Center(child: CircularProgressIndicator(strokeWidth: 3,));
@@ -86,28 +95,32 @@ class _MovieGridState extends State<MovieGrid> {
       return Center(child: Text(widget.emptyText));
     }
 
-    return GridView.builder(
-      controller: _controller,
-      itemCount: _movies != null ? _movies.length : 0,
-      gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 0.585,
-        mainAxisSpacing: 10.0,
-        crossAxisSpacing: 10.0,
-      ),
-      padding: EdgeInsets.all(10.0),
-      itemBuilder: (context, index) {
-        var movie = _movies[index];
-        var cover = movie['cover'];
-        var tmdbId = int.parse(movie['tmdbId']);
-        return MovieCard(tmdbId: tmdbId, child: widget.buildVoteBar(movie), imageUrl: cover);
-      }
+    return RefreshIndicator(
+      onRefresh: _refresh,
+      child: GridView.builder(
+        physics: const AlwaysScrollableScrollPhysics(),
+        controller: _controller,
+        itemCount: _movies != null ? _movies.length : 0,
+        gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 0.585,
+          mainAxisSpacing: 10.0,
+          crossAxisSpacing: 10.0,
+        ),
+        padding: EdgeInsets.all(10.0),
+        itemBuilder: (context, index) {
+          var movie = _movies[index];
+          var cover = movie['cover'];
+          var tmdbId = int.parse(movie['tmdbId']);
+          return MovieCard(tmdbId: tmdbId, child: widget.buildVoteBar(movie), imageUrl: cover);
+        }
+      )
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_hasNextPage || !_hasQueried) {
+    if (!_hasQueried) {
       _queryMovies();
     }
     return Container(
