@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../utils.dart';
+import 'package:flix_list/util/utils.dart';
 
 class MovieCard extends StatefulWidget {
   MovieCard({Key key, @required this.child, @required this.imageUrl, this.tmdbId}) : super(key: key);
