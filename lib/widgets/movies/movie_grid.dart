@@ -100,19 +100,25 @@ class _MovieGridState extends State<MovieGrid> {
   }
 
   Widget _child() {
+    Widget view;
     if (_loading) {
-      return Center(child: CircularProgressIndicator(strokeWidth: 3,));
-    } else if (_hasQueried && _movies.isEmpty) {
-      return Container(
-        margin: EdgeInsets.all(32),
-        child: Center(
-          child: Text(widget.emptyText, textAlign: TextAlign.center,)
+      view = SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Center(child: CircularProgressIndicator(strokeWidth: 3,))
+      );
+     } else if (_hasQueried && _movies.isEmpty) {
+      view = SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Container(
+          height: MediaQuery.of(context).size.height * 0.8,
+          margin: EdgeInsets.only(left: 32, right: 32),
+          child: Center(
+            child: Text(widget.emptyText, textAlign: TextAlign.center,)
+          )
         )
       );
-    }
-    return RefreshIndicator(
-      onRefresh: _refresh,
-      child: GridView.builder(
+    } else {
+      view = GridView.builder(
         physics: const AlwaysScrollableScrollPhysics(),
         controller: _controller,
         itemCount: _movies != null ? _movies.length : 0,
@@ -129,7 +135,12 @@ class _MovieGridState extends State<MovieGrid> {
           var tmdbId = int.parse(movie['tmdbId']);
           return MovieCard(tmdbId: tmdbId, child: widget.buildVoteBar(movie,  (like) => _onResponseChange(like, tmdbId)), imageUrl: cover);
         }
-      )
+      );
+    }
+
+    return RefreshIndicator(
+      onRefresh: _refresh,
+      child: view
     );
   }
 
