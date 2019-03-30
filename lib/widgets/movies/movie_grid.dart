@@ -79,10 +79,10 @@ class _MovieGridState extends State<MovieGrid> {
     }
   }
 
-<<<<<<< HEAD
   _onResponseChange(like, tmdbId) {
-    submitResponse(GraphQLProvider.of(context), tmdbId, like, callback)
-=======
+    submitResponse(GraphQLProvider.of(context), tmdbId, like, _refresh);
+  }
+
   Future<void> _refresh() async {
     setState((){
       _endCursor = null;
@@ -90,7 +90,6 @@ class _MovieGridState extends State<MovieGrid> {
       _hasNextPage = true;
     });
     await _queryMovies();
->>>>>>> 7eaa3b35b37969c406ec4848461a9868a10b7d0a
   }
 
   Widget _child() {
