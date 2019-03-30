@@ -1,26 +1,32 @@
 import 'package:flutter/material.dart';
 
 class CountVoteBar extends StatefulWidget {
-  CountVoteBar({Key key, @required this.likes, @required this.dislikes}) : super(key: key);
-
-  int likes;
-  int dislikes;
+  CountVoteBar({Key key, @required this.movie}) : super(key: key);
+  final movie;
 
   @override
   _CountVoteBarState createState() => _CountVoteBarState();
 }
 
 class _CountVoteBarState extends State<CountVoteBar> {
-
   bool _liked = false;
   bool _disliked = false;
+  int _likes = 0;
+  int _dislikes = 0;
+
+  @override
+  initState(){
+    _likes = widget.movie['followeeLikes'];
+    _dislikes = widget.movie['followeeDislikes'];
+    super.initState();
+  }
 
   void _like() {
     if (!_liked) {
-      widget.likes += 1;
+      _likes += 1;
     }
     if (_disliked) {
-      widget.dislikes -= 1;
+      _dislikes -= 1;
     }
     setState(() {
       _liked = true;
@@ -30,10 +36,10 @@ class _CountVoteBarState extends State<CountVoteBar> {
 
   void _dislike() {
     if (!_disliked) {
-      widget.dislikes += 1;
+      _dislikes += 1;
     }
     if (_liked) {
-      widget.likes -= 1;
+      _likes -= 1;
     }
     setState(() {
       _liked = false;
@@ -56,7 +62,7 @@ class _CountVoteBarState extends State<CountVoteBar> {
           width: 18,
           child: Container(
             child: Text(
-              widget.likes.toString(),
+              _likes.toString(),
               style: TextStyle(color: _liked ? blue : black, fontWeight: FontWeight.bold)
             ),
           ),
@@ -69,7 +75,7 @@ class _CountVoteBarState extends State<CountVoteBar> {
           width: 18,
           child: Container(
             child: Text(
-              widget.dislikes.toString(),
+              _dislikes.toString(),
               style: TextStyle(color: _disliked ? blue : black, fontWeight: FontWeight.bold)
             ),
           ),

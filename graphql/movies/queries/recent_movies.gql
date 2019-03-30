@@ -1,5 +1,10 @@
-query recent_movies($first: Int, $after: String){
+query recentMovies($first: Int, $after: String){
   recentMovies(first:$first, after: $after) {
+    pageInfo{
+      hasNextPage
+      endCursor
+      startCursor
+    }
     edges {
       node {
         tmdbId
