@@ -36,7 +36,7 @@ class _SignupPageState extends State<SignupPage>{
     setState(() {
       _loading = true;
     });
-    bool success = widget.onSignup(name: _name, email: _email, password: _password);
+    bool success = await widget.onSignup(name: _name, email: _email, password: _password);
     setState(() {
       _loading = false;
     });

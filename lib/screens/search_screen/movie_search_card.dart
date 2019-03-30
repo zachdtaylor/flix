@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../utils.dart';
+import 'package:flix_list/util/utils.dart';
 
 class MovieSearchCard extends StatelessWidget {
   MovieSearchCard({Key key, this.tmdbId, this.title, this.imageUrl}) : super(key: key);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flix_list/util/utils.dart';
 
 class MovieScreen extends StatefulWidget {
   MovieScreen({Key key, this.tmdbId}) : super(key: key);
@@ -40,35 +41,8 @@ class _MovieScreenState extends State<MovieScreen> {
     });
   }
 
-  _submitResponse(like) async {
-    print("<<<<<<<<<<<<< clicked: $like <<<<<<<<<<<<<<");
-    GraphQLProvider.of(context).value.mutate(
-      MutationOptions(
-        document: await rootBundle.loadString('graphql/movies/mutations/movie_response.gql'),
-        variables: {
-          'like': like,
-          'tmdbId': widget.tmdbId
-        }
-      )
-    ).then(
-      (result) {
-        _getInfo();
-      }
-    );
-  }
-
-  bool _liked() {
-    if (userResponse != null) {
-      return userResponse['like'] == true;
-    }
-    return false;
-  }
-
-  bool _disliked() {
-    if (userResponse != null) {
-      return userResponse['like'] == false;
-    }
-    return false;
+  _respondToMovie(like) {
+    submitResponse(GraphQLProvider.of(context), widget.tmdbId, like, _getInfo);
   }
 
   @override
@@ -111,12 +85,12 @@ class _MovieScreenState extends State<MovieScreen> {
                 child: Column(
                   children: <Widget>[
                     IconButton(
-                      icon: Icon(Icons.thumb_up, color: _liked() ? blue : white),
-                      onPressed: () => _submitResponse(_liked() ? null : true)
+                      icon: Icon(Icons.thumb_up, color: liked(userResponse) ? blue : white),
+                      onPressed: () => _respondToMovie(liked(userResponse) ? null : true)
                     ),
                     IconButton(
-                      icon: Icon(Icons.thumb_down, color: _disliked() ? blue : white),
-                      onPressed: () => _submitResponse(_disliked() ? null : false)
+                      icon: Icon(Icons.thumb_down, color: disliked(userResponse) ? blue : white),
+                      onPressed: () => _respondToMovie(disliked(userResponse) ? null : false)
                     ),
                     IconButton(
                       icon: Icon(Icons.share, color: white)
