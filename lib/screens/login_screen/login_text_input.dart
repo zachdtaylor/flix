@@ -2,18 +2,24 @@ import 'package:flutter/material.dart';
 
 class LoginTextInput extends StatelessWidget {
   final String label;
+  final TextInputAction action;
+  final Function onEditingComplete;
   final String hint;
   final bool password;
   final Function onChanged;
   final bool error;
+  final FocusNode focus;
 
   LoginTextInput({
       Key key,
       this.label,
       this.hint,
+      this.onEditingComplete,
+      this.action=TextInputAction.next,
       this.password=false,
       this.onChanged,
-      this.error=false
+      this.error=false,
+      this.focus,
   }) : super(key: key);
 
   @override
@@ -59,6 +65,9 @@ class LoginTextInput extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   child: TextField(
+                    focusNode: focus,
+                    textInputAction: action,
+                    onEditingComplete: onEditingComplete,
                     obscureText: password,
                     textAlign: TextAlign.left,
                     style: TextStyle(color: Colors.black),

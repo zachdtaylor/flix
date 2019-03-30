@@ -23,6 +23,8 @@ class _SignupPageState extends State<SignupPage>{
   bool _loading = false;
   bool _error = false;
   String _errorMessage = "";
+  FocusNode emailNode = FocusNode();
+  FocusNode passwordNode = FocusNode();
 
   _signupPressed() async {
     if (_name == "" || _email == "" || _password == ""){
@@ -78,6 +80,7 @@ class _SignupPageState extends State<SignupPage>{
                 LoginTextInput(
                   label: 'Your Name',
                   hint: 'First Last',
+                  onEditingComplete: () => FocusScope.of(context).requestFocus(emailNode),
                   error: _error,
                   onChanged: (value) => {
                     setState(() {
@@ -89,6 +92,8 @@ class _SignupPageState extends State<SignupPage>{
                 LoginTextInput(
                   label: 'Email Address',
                   hint: 'example@email.com',
+                  focus: emailNode,
+                  onEditingComplete: () => FocusScope.of(context).requestFocus(passwordNode),
                   error: _error,
                   onChanged: (value) => {
                     setState(() {
@@ -100,6 +105,9 @@ class _SignupPageState extends State<SignupPage>{
                 LoginTextInput(
                   label: 'Password',
                   hint: 'password',
+                  focus: passwordNode,
+                  onEditingComplete: _signupPressed,
+                  action: TextInputAction.done,
                   password: true,
                   error: _error,
                   onChanged: (value) => {
