@@ -17,6 +17,20 @@ class _MovieScreenState extends State<MovieScreen> {
   String summary;
   String title;
   Map<String, dynamic> userResponse;
+  double coverHeight = 0.8;
+  final controller = ScrollController();
+
+  @override
+  initState() {
+    super.initState();
+    controller.addListener(onScroll);
+  }
+
+  onScroll() {
+    setState(() {
+      coverHeight = controller.offset;
+    });
+  }
 
   _getInfo() async {
     QueryResult result = await GraphQLProvider.of(context).value.query(
@@ -52,16 +66,18 @@ class _MovieScreenState extends State<MovieScreen> {
     }
 
     Color white = Color(0xFFFFFFFF);
+    Color black = Color(0xFF000000);
     Color blue = Theme.of(context).accentColor;
 
     return imageUrl == null ? Center(child:CircularProgressIndicator(strokeWidth: 3,)) : Scaffold(
-      body: ListView(
+      body: Stack(
         children: <Widget>[
-          Stack(
+          ListView(
+            controller: controller,
             children: <Widget>[
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height*0.55,
+                height: MediaQuery.of(context).size.height*0.8,
                 alignment: Alignment.topLeft,
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -71,53 +87,80 @@ class _MovieScreenState extends State<MovieScreen> {
                   )
                 )
               ),
-              Positioned(
-                left: MediaQuery.of(context).size.width*0.01,
-                top:MediaQuery.of(context).size.height*0.01,
-                child: IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () => Navigator.of(context).pop(),
-                )
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.send, color: white)
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.share, color: white)
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.thumb_down, color: disliked(userResponse) ? blue : white),
+                    onPressed: () => _respondToMovie(disliked(userResponse) ? null : false)
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.thumb_up, color: liked(userResponse) ? blue : white),
+                    onPressed: () => _respondToMovie(liked(userResponse) ? null : true)
+                  )
+                ],
               ),
-              Positioned(
-                right: MediaQuery.of(context).size.width*0.01,
-                top:MediaQuery.of(context).size.height*0.01,
-                child: Column(
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(Icons.thumb_up, color: liked(userResponse) ? blue : white),
-                      onPressed: () => _respondToMovie(liked(userResponse) ? null : true)
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.thumb_down, color: disliked(userResponse) ? blue : white),
-                      onPressed: () => _respondToMovie(disliked(userResponse) ? null : false)
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.share, color: white)
-                    )
-                  ]
+              Card(
+                margin: EdgeInsets.fromLTRB(5, 0, 5, 5),
+                child: Container(
+                  padding: EdgeInsets.all(15),
+                  child: Column(
+                    children: <Widget>[
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(title, style: TextStyle(fontSize: 24)),
+                      ),
+                      SizedBox(height:MediaQuery.of(context).size.height*0.015),
+                      Text(summary, softWrap: true)
+                    ]
+                  )
                 )
               )
             ]
           ),
-          Card(
-            margin: EdgeInsets.fromLTRB(5, 10, 5, 5),
-            child: Container(
-              padding: EdgeInsets.all(15),
-              child: Column(
-                children: <Widget>[
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(title, style: TextStyle(fontSize: 24)),
-                  ),
-                  SizedBox(height:MediaQuery.of(context).size.height*0.015),
-                  Text(summary, softWrap: true)
-                ]
+          Positioned(
+            left: MediaQuery.of(context).size.width*0.0,
+            top:MediaQuery.of(context).size.height*0.045,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width*0.15,
+              child: RawMaterialButton(
+                shape: CircleBorder(),
+                fillColor: black,
+                padding:EdgeInsets.all(10.0),
+                child: Icon(Icons.arrow_back),
+                onPressed: () => Navigator.of(context).pop(),
               )
             )
-          )
+          ),
         ]
       )
     );
   }
 }
+
+
+// Positioned(
+//   right: MediaQuery.of(context).size.width*0.01,
+//   top:MediaQuery.of(context).size.height*0.04,
+//   child: Column(
+//     children: <Widget>[
+//       IconButton(
+//         icon: Icon(Icons.thumb_up, color: liked(userResponse) ? blue : white),
+//         onPressed: () => _respondToMovie(liked(userResponse) ? null : true)
+//       ),
+//       IconButton(
+//         icon: Icon(Icons.thumb_down, color: disliked(userResponse) ? blue : white),
+//         onPressed: () => _respondToMovie(disliked(userResponse) ? null : false)
+//       ),
+//       IconButton(
+//         icon: Icon(Icons.share, color: white)
+//       )
+//     ]
+//   )
+// )

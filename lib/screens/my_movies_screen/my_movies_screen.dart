@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../widgets/movie_card.dart';
+import 'package:flix_list/widgets/movie_card.dart';
 import 'vote_bar.dart';
 
 import 'package:graphql_flutter/graphql_flutter.dart';
