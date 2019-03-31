@@ -127,8 +127,7 @@ class _MovieScreenState extends State<MovieScreen> {
             ]
           ),
           Positioned(
-            left: MediaQuery.of(context).size.width*0.0,
-            top:MediaQuery.of(context).size.height*0.045,
+            top: MediaQuery.of(context).size.height*0.045,
             child: SizedBox(
               width: MediaQuery.of(context).size.width*0.15,
               child: RawMaterialButton(
@@ -139,7 +138,7 @@ class _MovieScreenState extends State<MovieScreen> {
                 onPressed: () => Navigator.of(context).pop(),
               )
             )
-          ),
+          )
         ]
       )
     );
