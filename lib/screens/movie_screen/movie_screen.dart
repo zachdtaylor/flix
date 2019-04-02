@@ -18,6 +18,8 @@ class _MovieScreenState extends State<MovieScreen> {
   String summary;
   String title;
   String year;
+  int totalLikes;
+  int totalDislikes;
   bool _liked;
   bool _disliked;
   bool _hasQueried = false;
@@ -41,6 +43,8 @@ class _MovieScreenState extends State<MovieScreen> {
       summary = movie['summary'];
       title = movie['title'];
       year = DateFormat.yMMMM().format(DateTime.parse(movie['releaseDate']));
+      totalLikes = movie['totalLikes'];
+      totalDislikes = movie['totalDislikes'];
       if (!_hasQueried) {
         _liked = liked(movie['userResponse']);
         _disliked = disliked(movie['userResponse']);
@@ -126,7 +130,18 @@ class _MovieScreenState extends State<MovieScreen> {
                         child: Text(year, style: TextStyle(fontSize: 16))
                       ),
                       SizedBox(height:MediaQuery.of(context).size.height*0.015),
-                      Text(summary, softWrap: true)
+                      Text(summary, softWrap: true),
+                      Divider(
+                        height: 24.0,
+                        color: white
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Text('$totalDislikes ' + (totalDislikes == 1 ? 'dislike' : 'dislikes')),
+                          Text('$totalLikes ' + (totalLikes == 1 ? 'like' : 'likes'))
+                        ]
+                      )
                     ]
                   )
                 )
@@ -151,3 +166,21 @@ class _MovieScreenState extends State<MovieScreen> {
     );
   }
 }
+
+
+
+
+
+
+              // SliverAppBar(
+              //   title: Text(title),
+              //   expandedHeight: MediaQuery.of(context).size.height*0.80,
+              //   pinned: true,
+              //   floating: false,
+              //   flexibleSpace: FlexibleSpaceBar(
+              //     background: Image.network(
+              //       imageUrl,
+              //       fit: BoxFit.cover
+              //     ),
+              //   ),
+              // ),
