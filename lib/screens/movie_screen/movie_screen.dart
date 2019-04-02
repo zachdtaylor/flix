@@ -16,7 +16,9 @@ class _MovieScreenState extends State<MovieScreen> {
   String imageUrl;
   String summary;
   String title;
-  Map<String, dynamic> userResponse;
+  bool _liked;
+  bool _disliked;
+  bool _hasQueried = false;
 
   _getInfo() async {
     QueryResult result = await GraphQLProvider.of(context).value.query(
@@ -36,7 +38,11 @@ class _MovieScreenState extends State<MovieScreen> {
       imageUrl = movie['cover'];
       summary = movie['summary'];
       title = movie['title'];
-      userResponse = movie['userResponse'];
+      if (!_hasQueried) {
+        _liked = liked(movie['userResponse']);
+        _disliked = disliked(movie['userResponse']);
+        _hasQueried = true;
+      }
     });
   }
 
@@ -54,7 +60,7 @@ class _MovieScreenState extends State<MovieScreen> {
     Color black = Color(0xFF000000);
     Color blue = Theme.of(context).accentColor;
 
-    return imageUrl == null ? Center(child:CircularProgressIndicator(strokeWidth: 3,)) : Scaffold(
+    return imageUrl == null ? Center(child:CircularProgressIndicator(strokeWidth: 4)) : Scaffold(
       body: Stack(
         children: <Widget>[
           ListView(
@@ -81,12 +87,24 @@ class _MovieScreenState extends State<MovieScreen> {
                     icon: Icon(Icons.share, color: white)
                   ),
                   IconButton(
-                    icon: Icon(Icons.thumb_down, color: disliked(userResponse) ? blue : white),
-                    onPressed: () => _respondToMovie(disliked(userResponse) ? null : false)
+                    icon: Icon(Icons.thumb_down, color: _disliked ? blue : white),
+                    onPressed: () {
+                      _respondToMovie(_disliked ? null : false);
+                      setState(() {
+                        _liked = false;
+                        _disliked = _disliked ? false : true;
+                      });
+                    }
                   ),
                   IconButton(
-                    icon: Icon(Icons.thumb_up, color: liked(userResponse) ? blue : white),
-                    onPressed: () => _respondToMovie(liked(userResponse) ? null : true)
+                    icon: Icon(Icons.thumb_up, color: _liked ? blue : white),
+                    onPressed: () {
+                      _respondToMovie(_liked ? null : true);
+                      setState(() {
+                        _liked = _liked ? false : true;
+                        _disliked = false;
+                      });
+                    } 
                   )
                 ],
               ),
@@ -109,8 +127,7 @@ class _MovieScreenState extends State<MovieScreen> {
             ]
           ),
           Positioned(
-            left: MediaQuery.of(context).size.width*0.0,
-            top:MediaQuery.of(context).size.height*0.045,
+            top: MediaQuery.of(context).size.height*0.045,
             child: SizedBox(
               width: MediaQuery.of(context).size.width*0.15,
               child: RawMaterialButton(
@@ -121,30 +138,9 @@ class _MovieScreenState extends State<MovieScreen> {
                 onPressed: () => Navigator.of(context).pop(),
               )
             )
-          ),
+          )
         ]
       )
     );
   }
 }
-
-
-// Positioned(
-//   right: MediaQuery.of(context).size.width*0.01,
-//   top:MediaQuery.of(context).size.height*0.04,
-//   child: Column(
-//     children: <Widget>[
-//       IconButton(
-//         icon: Icon(Icons.thumb_up, color: liked(userResponse) ? blue : white),
-//         onPressed: () => _respondToMovie(liked(userResponse) ? null : true)
-//       ),
-//       IconButton(
-//         icon: Icon(Icons.thumb_down, color: disliked(userResponse) ? blue : white),
-//         onPressed: () => _respondToMovie(disliked(userResponse) ? null : false)
-//       ),
-//       IconButton(
-//         icon: Icon(Icons.share, color: white)
-//       )
-//     ]
-//   )
-// )

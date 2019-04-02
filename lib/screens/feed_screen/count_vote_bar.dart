@@ -67,19 +67,6 @@ class _CountVoteBarState extends State<CountVoteBar> {
     return Row(
       children: <Widget>[
         IconButton(
-          icon: Icon(Icons.thumb_up, color: _liked ? blue : black),
-          onPressed: _like
-        ),
-        SizedBox(
-          width: 18,
-          child: Container(
-            child: Text(
-              _likes.toString(),
-              style: TextStyle(color: _liked ? blue : black, fontWeight: FontWeight.bold)
-            ),
-          ),
-        ),
-        IconButton(
           icon: Icon(Icons.thumb_down, color: _disliked ? blue : black),
           onPressed: _dislike,
         ),
@@ -89,6 +76,19 @@ class _CountVoteBarState extends State<CountVoteBar> {
             child: Text(
               _dislikes.toString(),
               style: TextStyle(color: _disliked ? blue : black, fontWeight: FontWeight.bold)
+            ),
+          ),
+        ),
+        IconButton(
+          icon: Icon(Icons.thumb_up, color: _liked ? blue : black),
+          onPressed: _like
+        ),
+        SizedBox(
+          width: 18,
+          child: Container(
+            child: Text(
+              _likes.toString(),
+              style: TextStyle(color: _liked ? blue : black, fontWeight: FontWeight.bold)
             ),
           ),
         )

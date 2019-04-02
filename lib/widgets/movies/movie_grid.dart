@@ -101,12 +101,7 @@ class _MovieGridState extends State<MovieGrid> {
 
   Widget _child() {
     Widget view;
-    if (_loading) {
-      view = SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: Center(child: CircularProgressIndicator(strokeWidth: 3,))
-      );
-     } else if (_hasQueried && _movies.isEmpty) {
+    if (_hasQueried && _movies.isEmpty) {
       view = SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         child: Container(
@@ -138,7 +133,7 @@ class _MovieGridState extends State<MovieGrid> {
       );
     }
 
-    return RefreshIndicator(
+    return _loading ? Center(child: CircularProgressIndicator(strokeWidth: 4,)) : RefreshIndicator(
       onRefresh: _refresh,
       child: view
     );

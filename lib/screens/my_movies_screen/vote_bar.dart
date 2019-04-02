@@ -29,22 +29,22 @@ class _VoteBarState extends State<VoteBar> {
     return Row(
       children: <Widget>[
         IconButton(
-          icon: Icon(Icons.thumb_up, color: _liked ? blue : black),
-          onPressed: () {
-            widget.onChange(_liked ? null : true);
-            setState(() {
-              _liked = _liked ? false : true;
-              _disliked = false;
-            });
-          }
-        ),
-        IconButton(
           icon: Icon(Icons.thumb_down, color: _disliked ? blue : black),
           onPressed: () {
             widget.onChange(_disliked ? null : false);
             setState(() {
               _liked = false;
               _disliked = _disliked ? false : true;
+            });
+          }
+        ),
+        IconButton(
+          icon: Icon(Icons.thumb_up, color: _liked ? blue : black),
+          onPressed: () {
+            widget.onChange(_liked ? null : true);
+            setState(() {
+              _liked = _liked ? false : true;
+              _disliked = false;
             });
           }
         )
