@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'home.dart';
-import 'screens/login_screen/login_screen.dart';
+import 'package:flix_list/screens/login_screen/login_screen.dart';
+import 'package:flix_list/screens/movie_search_screen/movie_search_screen.dart';
+import 'package:flix_list/screens/user_search_screen/user_search_screen.dart';
 import 'package:flutter/services.dart';
 
 void main() async {
@@ -63,7 +66,9 @@ class MyApp extends StatelessWidget {
         title: 'Flix',
         routes: <String, WidgetBuilder>{
           '/home': (BuildContext context) => Home(),
-          '/login': (BuildContext context) => LoginScreen()
+          '/login': (BuildContext context) => LoginScreen(),
+          '/search/movies': (BuildContext context) => MovieSearchScreen(),
+          '/search/users': (BuildContext context) => UserSearchScreen()
         },
         theme: ThemeData(
           brightness: Brightness.dark,

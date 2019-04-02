@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flix_list/util/utils.dart';
 
-class MovieSearchCard extends StatelessWidget {
-  MovieSearchCard({Key key, this.tmdbId, this.title, this.imageUrl}) : super(key: key);
+class SearchCard extends StatelessWidget {
+  SearchCard({Key key, this.title, this.imageUrl, this.loadingImageUrl, this.onTap}) : super(key: key);
 
-  final int tmdbId;
   final String title;
   final String imageUrl;
+  final String loadingImageUrl;
+  final Function onTap;
 
   _image() {
     try {
       NetworkImage image = NetworkImage(imageUrl);
       return image;
     } catch (Exception) {
-      return AssetImage("images/cover_unavailable.jpg");
+      return AssetImage(loadingImageUrl);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => goToMovieScreen(context, tmdbId),
+      onTap: () => onTap(),
       child: Card(
         child: Flex(
           direction: Axis.horizontal,
@@ -59,5 +59,5 @@ class MovieSearchCard extends StatelessWidget {
     );
   }
 
-  
+
 }
