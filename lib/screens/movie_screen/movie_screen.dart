@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flix_list/util/utils.dart';
+import 'package:intl/intl.dart';
 
 class MovieScreen extends StatefulWidget {
   MovieScreen({Key key, this.tmdbId}) : super(key: key);
@@ -16,6 +17,9 @@ class _MovieScreenState extends State<MovieScreen> {
   String imageUrl;
   String summary;
   String title;
+  String year;
+  int totalLikes;
+  int totalDislikes;
   bool _liked;
   bool _disliked;
   bool _hasQueried = false;
@@ -38,6 +42,9 @@ class _MovieScreenState extends State<MovieScreen> {
       imageUrl = movie['cover'];
       summary = movie['summary'];
       title = movie['title'];
+      year = DateFormat.yMMMM().format(DateTime.parse(movie['releaseDate']));
+      totalLikes = movie['totalLikes'];
+      totalDislikes = movie['totalDislikes'];
       if (!_hasQueried) {
         _liked = liked(movie['userResponse']);
         _disliked = disliked(movie['userResponse']);
@@ -116,10 +123,25 @@ class _MovieScreenState extends State<MovieScreen> {
                     children: <Widget>[
                       Align(
                         alignment: Alignment.topLeft,
-                        child: Text(title, style: TextStyle(fontSize: 24)),
+                        child: Text(title, style: TextStyle(fontSize: 24))
+                      ),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(year, style: TextStyle(fontSize: 16))
                       ),
                       SizedBox(height:MediaQuery.of(context).size.height*0.015),
-                      Text(summary, softWrap: true)
+                      Text(summary, softWrap: true),
+                      Divider(
+                        height: 24.0,
+                        color: white
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Text('$totalDislikes ' + (totalDislikes == 1 ? 'dislike' : 'dislikes')),
+                          Text('$totalLikes ' + (totalLikes == 1 ? 'like' : 'likes'))
+                        ]
+                      )
                     ]
                   )
                 )
@@ -144,3 +166,21 @@ class _MovieScreenState extends State<MovieScreen> {
     );
   }
 }
+
+
+
+
+
+
+              // SliverAppBar(
+              //   title: Text(title),
+              //   expandedHeight: MediaQuery.of(context).size.height*0.80,
+              //   pinned: true,
+              //   floating: false,
+              //   flexibleSpace: FlexibleSpaceBar(
+              //     background: Image.network(
+              //       imageUrl,
+              //       fit: BoxFit.cover
+              //     ),
+              //   ),
+              // ),
