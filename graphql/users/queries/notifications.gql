@@ -1,0 +1,31 @@
+query notifications($first: Int, $after: String){
+  user {
+    notifications(first: $first, after: $after) {
+      edges {
+        node {
+          read
+          createdAt
+          __typename
+          ... on MovieRecomendationNotificationType {
+            fromUser {
+              userId
+              name
+            }
+            movie {
+              movieId
+              tmdbId
+              cover
+              title
+            }
+          }
+          ... on NewFollowerNotificationType {
+            follower {
+              userId
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+}

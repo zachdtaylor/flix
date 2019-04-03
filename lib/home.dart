@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:badges/badges.dart';
 
 import 'screens/feed_screen/feed_screen.dart';
 import 'screens/my_movies_screen/my_movies_screen.dart';
@@ -12,6 +15,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
+  int _notificationCount = 0;
   final List<Widget> _children = [FeedScreen(), MyMoviesScreen(), FriendsScreen()];
   final List<String> _titles = ["Feed", "My Movies", "Friends"];
   PageController _pageController = PageController();
@@ -20,21 +24,35 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     _pageController.addListener(() {
+        var page = _pageController.page.round();
+        if (page == 0) _getUnreadNotificationCount();
         setState((){
-            _currentIndex = _pageController.page.round();
+            _currentIndex = page;
         });
     });
   }
 
+  Future<void> _getUnreadNotificationCount() async {
+    QueryResult result = await GraphQLProvider.of(context).value.query(
+      QueryOptions(
+        fetchPolicy: FetchPolicy.networkOnly,
+        document: await rootBundle.loadString('graphql/users/queries/notification_count.gql')
+      )
+    );
+    if (result.errors == null || result.errors.length == 0) {
+      setState(() {
+        _notificationCount = result.data['user']['unreadNotificationCount'];
+      });
+    }
+  }
+
   void _onTabTapped(int index) {
-    setState(() {
-      // _currentIndex = index;
-      _pageController.animateToPage(
-        index,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.ease
-      );
-    });
+    if (index == 0) _getUnreadNotificationCount();
+    _pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.ease
+    );
   }
 
   _feedActions(context) {
@@ -43,10 +61,14 @@ class _HomeState extends State<Home> {
         icon: Icon(Icons.filter_list, color: Colors.white),
         tooltip: "Filter"
       ),
-      IconButton(
-        icon: Icon(Icons.notifications, color: Colors.white),
-        tooltip: "Notification",
-      )
+      BadgeIconButton(
+        itemCount: _notificationCount, // required
+        icon: Icon(Icons.notifications), // required
+        badgeColor: Theme.of(context).accentColor, // default: Colors.red
+        badgeTextColor: Colors.white, // default: Colors.white
+        hideZeroCount: true, // default: true
+        onPressed: () => Navigator.pushNamed(context, '/notifications'),
+      ),
     ];
   }
 

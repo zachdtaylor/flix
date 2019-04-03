@@ -72,8 +72,8 @@ class _MovieGridState extends State<MovieGrid> {
       });
 
       Map<String, dynamic>  data = result.data;
-      print('<<<<<<<<<<<<<<<<<<<<<<<,');
-      print(data);
+      // print('<<<<<<<<<<<<<<<<<<<<<<<,');
+      // print(data);
       var newData = widget.resultData(data);
       var pageData = widget.pageData(data);
       if (newData.length >= 0) {
