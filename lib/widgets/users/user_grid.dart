@@ -1,37 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:flix_list/widgets/movies/movie_card.dart';
-import 'package:flix_list/util/utils.dart';
+import 'package:flix_list/widgets/users/user_card.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:async';
 
-class MovieGrid extends StatefulWidget {
+class UserGrid extends StatefulWidget {
   final String query;
   final String emptyText;
-  final Function buildVoteBar;
+  final Function buildNameBar;
   final Function resultData;
   final Function pageData;
 
-  MovieGrid({
+  UserGrid({
     Key key,
     this.query,
     this.emptyText,
-    this.buildVoteBar,
+    this.buildNameBar,
     this.resultData,
     this.pageData,
   }) : super(key: key);
 
   @override
-  _MovieGridState createState() => _MovieGridState();
+  _UserGridState createState() => _UserGridState();
 }
 
-class _MovieGridState extends State<MovieGrid> {
+class _UserGridState extends State<UserGrid> {
   String _endCursor;
   bool _hasNextPage = true;
   int _pageCount = 24;
   bool _hasQueried = false;
   bool _loading = true;
-  List<dynamic> _movies = [];
+  List<dynamic> _users = [];
   ScrollController _controller;
   Timer _debounce;
 
@@ -67,33 +66,29 @@ class _MovieGridState extends State<MovieGrid> {
         )
       );
       setState((){
-          _hasQueried=true;
+          _hasQueried = true;
           _loading = false;
       });
 
       Map<String, dynamic>  data = result.data;
-      // print('<<<<<<<<<<<<<<<<<<<<<<<,');
-      // print(data);
       var newData = widget.resultData(data);
+      print('<<<<<<<<<<< newData <<<<<<<<<<<<');
+      print(newData);
       var pageData = widget.pageData(data);
       if (newData.length >= 0) {
         setState(() {
             _endCursor = pageData['endCursor'];
             _hasNextPage = pageData['hasNextPage'];
-            _movies.addAll(newData);
+            _users.addAll(newData);
         });
       }
     }
   }
 
-  _onResponseChange(like, tmdbId) {
-    submitResponse(GraphQLProvider.of(context), tmdbId, like, () {});
-  }
-
   Future<void> _refresh() async {
     setState((){
       _endCursor = null;
-      _movies = [];
+      _users = [];
       _hasNextPage = true;
     });
     await _queryMovies();
@@ -101,14 +96,14 @@ class _MovieGridState extends State<MovieGrid> {
 
   Widget _child() {
     Widget view;
-    if (_hasQueried && _movies.isEmpty) {
+    if (_hasQueried && _users.isEmpty) {
       view = SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         child: Container(
           height: MediaQuery.of(context).size.height * 0.8,
           margin: EdgeInsets.only(left: 32, right: 32),
           child: Center(
-            child: Text(widget.emptyText, textAlign: TextAlign.center,)
+            child: Text(widget.emptyText, textAlign: TextAlign.center)
           )
         )
       );
@@ -116,7 +111,7 @@ class _MovieGridState extends State<MovieGrid> {
       view = GridView.builder(
         physics: const AlwaysScrollableScrollPhysics(),
         controller: _controller,
-        itemCount: _movies != null ? _movies.length : 0,
+        itemCount: _users != null ? _users.length : 0,
         gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 0.585,
@@ -125,15 +120,15 @@ class _MovieGridState extends State<MovieGrid> {
         ),
         padding: EdgeInsets.all(10.0),
         itemBuilder: (context, index) {
-          var movie = _movies[index];
-          var cover = movie['cover'];
-          var tmdbId = int.parse(movie['tmdbId']);
-          return MovieCard(tmdbId: tmdbId, child: widget.buildVoteBar(movie,  (like) => _onResponseChange(like, tmdbId)), imageUrl: cover);
+          var user = _users[index];
+          var name = user['name'];
+          var userId = int.parse(user['userId']);
+          return UserCard(userId: userId, child: widget.buildNameBar(name));
         }
       );
     }
 
-    return _loading ? Center(child: CircularProgressIndicator(strokeWidth: 4,)) : RefreshIndicator(
+    return _loading ? Center(child: CircularProgressIndicator(strokeWidth: 4)) : RefreshIndicator(
       onRefresh: _refresh,
       child: view
     );

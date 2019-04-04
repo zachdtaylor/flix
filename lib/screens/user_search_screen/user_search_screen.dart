@@ -24,7 +24,7 @@ class UserSearchScreen extends StatelessWidget {
       buildResult: (user) {
         var userId = int.parse(user['userId']);
         var name = user['name'];
-        var profile = ''; //user['profile'];
+        var profile = 'https://meng.uic.edu/wp-content/uploads/sites/92/2018/07/empty-profile.png'; //user['profile'];
         return UserSearchCard(userId: userId, name: name, profileUrl: profile);
       }
     );
