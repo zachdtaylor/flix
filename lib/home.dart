@@ -130,7 +130,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> _children = [FeedScreen(), MyMoviesScreen(showButton: _showButton), FriendsScreen()];
+    final List<Widget> _children = [FeedScreen(), MyMoviesScreen(showButton: _showButton), FriendsScreen(showButton: _showButton)];
     return Scaffold(
       appBar: AppBar(
         title: Text(_titles[_currentIndex]),
