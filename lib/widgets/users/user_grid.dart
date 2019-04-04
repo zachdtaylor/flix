@@ -10,6 +10,7 @@ class UserGrid extends StatefulWidget {
   final Function buildNameBar;
   final Function resultData;
   final Function pageData;
+  final Function(bool) showButton;
 
   UserGrid({
     Key key,
@@ -18,6 +19,7 @@ class UserGrid extends StatefulWidget {
     this.buildNameBar,
     this.resultData,
     this.pageData,
+    this.showButton,
   }) : super(key: key);
 
   @override
@@ -38,6 +40,7 @@ class _UserGridState extends State<UserGrid> {
   initState() {
     _controller = ScrollController();
     _controller.addListener(_scrollListener);
+    _controller.addListener(_buttonListener);
     super.initState();
   }
 
@@ -47,6 +50,14 @@ class _UserGridState extends State<UserGrid> {
       _debounce = Timer(const Duration(milliseconds: 500), () {
           _queryMovies();
       });
+    }
+  }
+
+  _buttonListener() {
+    if (_controller.offset == _controller.position.minScrollExtent) {
+      if (widget.showButton != null) widget.showButton(true);
+    } else {
+      if (widget.showButton != null) widget.showButton(false);
     }
   }
 
