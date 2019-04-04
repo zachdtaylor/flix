@@ -14,7 +14,7 @@ class UserSearchScreen extends StatelessWidget {
           QueryOptions(
             document: await rootBundle.loadString('graphql/users/queries/search_users.gql'),
             variables: {
-              'text': searchText
+              'text': searchText,
             }
           )
         );
@@ -22,7 +22,7 @@ class UserSearchScreen extends StatelessWidget {
         return data['searchUsers']['edges'].map((user) => user['node']).toList();
       },
       buildResult: (user) {
-        var userId = user['userId'];
+        var userId = int.parse(user['userId']);
         var name = user['name'];
         var profile = ''; //user['profile'];
         return UserSearchCard(userId: userId, name: name, profileUrl: profile);

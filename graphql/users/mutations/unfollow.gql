@@ -1,4 +1,4 @@
-mutation unfollow(userId: ID!) {
+mutation unfollow($userId: ID!) {
   unfollow(userId: $userId) {
     user {
       userId

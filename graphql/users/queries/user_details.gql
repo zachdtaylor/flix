@@ -7,9 +7,13 @@ query userDetails($userId: ID, $responseUserId: ID, $first: Int, $after: String)
     followeeCount
     followerCount
     movies(first: $first, after: $after) {
-      cover
-      userResponse(userId: $responseUserId){
-        like
+      edges {
+        node {
+          cover
+          userResponse(userId: $responseUserId) {
+            like
+          }
+        }
       }
     }
   }

@@ -138,8 +138,26 @@ class _MovieScreenState extends State<MovieScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          Text('$totalDislikes ' + (totalDislikes == 1 ? 'dislike' : 'dislikes')),
-                          Text('$totalLikes ' + (totalLikes == 1 ? 'like' : 'likes'))
+                          Icon(Icons.thumb_down, color: white),
+                          SizedBox(
+                            width: 18,
+                            child: Container(
+                              child: Text(
+                                totalDislikes.toString(),
+                                style: TextStyle(color: white, fontWeight: FontWeight.bold)
+                              ),
+                            ),
+                          ),
+                          Icon(Icons.thumb_up, color: white),
+                          SizedBox(
+                            width: 18,
+                            child: Container(
+                              child: Text(
+                                totalLikes.toString(),
+                                style: TextStyle(color: white, fontWeight: FontWeight.bold)
+                              )
+                            )
+                          )
                         ]
                       )
                     ]
