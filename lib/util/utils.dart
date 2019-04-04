@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flix_list/screens/movie_screen/movie_screen.dart';
+import 'package:flix_list/screens/user_screen/user_screen.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -7,6 +8,13 @@ goToMovieScreen(BuildContext context, int tmdbId) {
   Navigator.push(
     context,
     MaterialPageRoute(builder: (context) => MovieScreen(tmdbId: tmdbId))
+  );
+}
+
+goToUserScreen(BuildContext context, int userId) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => UserScreen(userId: userId))
   );
 }
 
@@ -25,7 +33,6 @@ bool disliked(userResponse) {
 }
 
 submitResponse(graphql, tmdbId, like, callback) async {
-  print("<<<<<<<<<<<<< clicked: $like <<<<<<<<<<<<<<");
   graphql.value.mutate(
     MutationOptions(
       document: await rootBundle.loadString('graphql/movies/mutations/movie_response.gql'),
@@ -39,8 +46,6 @@ submitResponse(graphql, tmdbId, like, callback) async {
       }
     )
   ).then(
-    (result) {
-      callback();
-    }
+    (result) => callback()
   );
 }

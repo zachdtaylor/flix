@@ -1,0 +1,17 @@
+query paginatedUsers($first: Int, $after: String){
+  user {
+    followees(first: $first, after: $after) {
+      pageInfo {
+        hasNextPage
+        endCursor
+        startCursor
+      }
+      edges {
+        node {
+          userId
+          name
+        }
+      }
+    }
+  }
+}
