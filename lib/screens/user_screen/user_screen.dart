@@ -12,7 +12,7 @@ class UserScreen extends StatefulWidget {
 }
 
 class _UserScreenState extends State<UserScreen> {
-  String imageUrl = 'https://meng.uic.edu/wp-content/uploads/sites/92/2018/07/empty-profile.png';
+  String imageUrl = 'http://www.mhbcplan.com/usercontent/TeamImages//missing-profile-female.jpg';
   String name;
   String email;
   int followeeCount;
@@ -87,7 +87,7 @@ class _UserScreenState extends State<UserScreen> {
             children: <Widget>[
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height*0.6,
+                height: MediaQuery.of(context).size.height*0.8,
                 alignment: Alignment.topLeft,
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -100,7 +100,7 @@ class _UserScreenState extends State<UserScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text('Following:'),
+                  Text('Following:', style: TextStyle(fontSize: 18)),
                   IconButton(
                     icon: Icon(
                       following ? Icons.check : Icons.add, 

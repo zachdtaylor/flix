@@ -17,7 +17,7 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
   int _notificationCount = 0;
   final List<Widget> _children = [FeedScreen(), MyMoviesScreen(), FriendsScreen()];
-  final List<String> _titles = ["Feed", "My Movies", "Friends"];
+  final List<String> _titles = ["Home", "My Movies", "Following"];
   PageController _pageController = PageController();
 
   @override
@@ -125,7 +125,7 @@ class _HomeState extends State<Home> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.movie), title: Text(_titles[0])),
+          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text(_titles[0])),
           BottomNavigationBarItem(icon: Icon(Icons.list), title: Text(_titles[1])),
           BottomNavigationBarItem(icon: Icon(Icons.people), title: Text(_titles[2]))
         ],

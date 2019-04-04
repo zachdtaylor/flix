@@ -6,7 +6,7 @@ class UserCard extends StatelessWidget {
 
   final int userId;
   final Widget child;
-  final String imageUrl = 'https://meng.uic.edu/wp-content/uploads/sites/92/2018/07/empty-profile.png';
+  final String imageUrl = 'http://www.mhbcplan.com/usercontent/TeamImages//missing-profile-female.jpg';
 
   @override
   Widget build(BuildContext context) {
