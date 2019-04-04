@@ -16,7 +16,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
   int _notificationCount = 0;
-  final List<Widget> _children = [FeedScreen(), MyMoviesScreen(), FriendsScreen()];
+  bool _showFloatingButton = true;
   final List<String> _titles = ["Feed", "My Movies", "Friends"];
   PageController _pageController = PageController();
 
@@ -53,6 +53,25 @@ class _HomeState extends State<Home> {
       duration: const Duration(milliseconds: 300),
       curve: Curves.ease
     );
+  }
+
+  _showButton(value) {
+    print('hereeeeeeeeeeeee');
+    setState(() {
+      _showFloatingButton = value;
+    });
+  }
+
+  _floatingButton() {
+    if (_currentIndex > 0) {
+      String path = _currentIndex == 1 ? '/search/movies' : '/search/users';
+      return FloatingActionButton(
+        onPressed: () => Navigator.pushNamed(context, path),
+        child: Icon(Icons.add,)
+      );
+    } else {
+      return null;
+    }
   }
 
   _feedActions(context) {
@@ -112,7 +131,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-
+    final List<Widget> _children = [FeedScreen(), MyMoviesScreen(showButton: _showButton), FriendsScreen()];
     return Scaffold(
       appBar: AppBar(
         title: Text(_titles[_currentIndex]),
@@ -133,6 +152,7 @@ class _HomeState extends State<Home> {
         currentIndex: _currentIndex,
         fixedColor: Theme.of(context).toggleableActiveColor
       ),
+      floatingActionButton: _showFloatingButton ? _floatingButton() : null,
     );
   }
 }

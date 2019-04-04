@@ -3,6 +3,7 @@ import 'package:flix_list/widgets/movies/movie_card.dart';
 import 'package:flix_list/util/utils.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/rendering.dart';
 import 'dart:async';
 
 class MovieGrid extends StatefulWidget {
@@ -11,6 +12,7 @@ class MovieGrid extends StatefulWidget {
   final Function buildVoteBar;
   final Function resultData;
   final Function pageData;
+  final Function(bool) showButton;
 
   MovieGrid({
     Key key,
@@ -19,6 +21,7 @@ class MovieGrid extends StatefulWidget {
     this.buildVoteBar,
     this.resultData,
     this.pageData,
+    this.showButton
   }) : super(key: key);
 
   @override
@@ -39,6 +42,7 @@ class _MovieGridState extends State<MovieGrid> {
   initState() {
     _controller = ScrollController();
     _controller.addListener(_scrollListener);
+    _controller.addListener(_buttonListener);
     super.initState();
   }
 
@@ -48,6 +52,14 @@ class _MovieGridState extends State<MovieGrid> {
       _debounce = Timer(const Duration(milliseconds: 500), () {
           _queryMovies();
       });
+    }
+  }
+
+  _buttonListener() {
+    if (_controller.offset == _controller.position.minScrollExtent) {
+      if (widget.showButton != null) widget.showButton(true);
+    } else {
+      if (widget.showButton != null) widget.showButton(false);
     }
   }
 
