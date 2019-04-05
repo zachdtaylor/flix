@@ -12,7 +12,7 @@ class UserScreen extends StatefulWidget {
 }
 
 class _UserScreenState extends State<UserScreen> {
-  String imageUrl = 'http://www.mhbcplan.com/usercontent/TeamImages//missing-profile-female.jpg';
+  String imageUrl = 'http://readyandresilient.army.mil/img/no-profile.png';
   String name;
   String email;
   int followeeCount;
@@ -87,7 +87,7 @@ class _UserScreenState extends State<UserScreen> {
             children: <Widget>[
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height*0.8,
+                height: MediaQuery.of(context).size.height*0.535,
                 alignment: Alignment.topLeft,
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -97,23 +97,25 @@ class _UserScreenState extends State<UserScreen> {
                   )
                 )
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text('Following:', style: TextStyle(fontSize: 18)),
-                  IconButton(
-                    icon: Icon(
-                      following ? Icons.check : Icons.add, 
-                      color: following ? blue : white
-                    ),
-                    onPressed: () {
-                      following ? _unfollow() : _follow();
-                      setState(() {
-                        following = following ? false : true;
-                      });
-                    } 
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                child: GestureDetector(
+                  onTap: () {
+                    print('<<<<<<<<< following: $following');
+                    following ? _unfollow() : _follow();
+                    setState(() {
+                      following = following ? false : true;
+                    });
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(following ? 'Following' : 'Follow', style: TextStyle(fontSize: 18)),
+                      IconButton(icon: Icon(following ? Icons.check : Icons.add, color: following ? blue : white)),
+                    ]
                   )
-                ],
+                ),
               ),
               Card(
                 margin: EdgeInsets.fromLTRB(5, 0, 5, 5),
@@ -148,7 +150,7 @@ class _UserScreenState extends State<UserScreen> {
             ]
           ),
           Positioned(
-            top: MediaQuery.of(context).size.height*0.045,
+            top: MediaQuery.of(context).padding.top + 5,
             child: SizedBox(
               width: MediaQuery.of(context).size.width*0.15,
               child: RawMaterialButton(

@@ -6,19 +6,19 @@ class UserCard extends StatelessWidget {
 
   final int userId;
   final Widget child;
-  final String imageUrl = 'http://www.mhbcplan.com/usercontent/TeamImages//missing-profile-female.jpg';
+  final String imageUrl = 'http://readyandresilient.army.mil/img/no-profile.png';
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Card(
-        color:Color(0xFFFFFFFF),
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              flex: 17,
-              child: GestureDetector(
-                onTap: () => goToUserScreen(context, userId),
+      child: GestureDetector(
+        onTap: () => goToUserScreen(context, userId),
+        child: Card(
+          color:Color(0xFFFFFFFF),
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                flex: 15,
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
@@ -29,16 +29,16 @@ class UserCard extends StatelessWidget {
                     )
                   ),
                 )
+              ),
+              Expanded(
+                flex: 4,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[ child ],
+                )
               )
-            ),
-            Expanded(
-              flex: 3,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[ child ],
-              )
-            )
-          ],
+            ],
+          )
         )
       )
     );

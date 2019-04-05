@@ -114,7 +114,7 @@ class _UserGridState extends State<UserGrid> {
         itemCount: _users != null ? _users.length : 0,
         gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 0.585,
+          childAspectRatio: 0.83,
           mainAxisSpacing: 10.0,
           crossAxisSpacing: 10.0,
         ),

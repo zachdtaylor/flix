@@ -149,7 +149,7 @@ class _MovieScreenState extends State<MovieScreen> {
             ]
           ),
           Positioned(
-            top: MediaQuery.of(context).size.height*0.045,
+            top: MediaQuery.of(context).padding.top + 5,
             child: SizedBox(
               width: MediaQuery.of(context).size.width*0.15,
               child: RawMaterialButton(
