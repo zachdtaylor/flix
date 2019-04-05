@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:flix_list/util/utils.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 class UserScreen extends StatefulWidget {
@@ -18,6 +19,7 @@ class _UserScreenState extends State<UserScreen> {
   int followeeCount;
   int followerCount;
   bool following;
+  List<dynamic> recentMovies;
   bool _hasQueried = false;
 
   _getInfo() async {
@@ -28,7 +30,7 @@ class _UserScreenState extends State<UserScreen> {
         variables: {
           'userId': widget.userId,
           'responseUserId': 1,
-          'first': 24,
+          'first': 3,
           'after': ''
         }
       )
@@ -42,6 +44,7 @@ class _UserScreenState extends State<UserScreen> {
       email = user['email'];
       followeeCount = user['followeeCount'];
       followerCount = user['followerCount'];
+      recentMovies = user['movies']['edges'].map((movie) => movie['node']);
       if (!_hasQueried) {
         following = user['following'];
         _hasQueried = true;
@@ -68,6 +71,28 @@ class _UserScreenState extends State<UserScreen> {
 
   _unfollow() {
     _respond('unfollow');
+  }
+
+  List<Widget> _recentMovieCovers() {
+    List<Widget> covers = [];
+    for (dynamic movie in recentMovies) {
+      covers.add(
+        GestureDetector(
+          onTap: () => goToMovieScreen(context, int.parse(movie['tmdbId'])),
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: NetworkImage(movie['cover'])
+              )
+            ),
+          )
+        )
+      );
+    }
+    return covers;
   }
 
   @override
@@ -144,6 +169,33 @@ class _UserScreenState extends State<UserScreen> {
                         ]
                       )
                     ]
+                  )
+                )
+              ),
+              GestureDetector(
+                onTap: () => {},
+                child: Card(
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 5),
+                  child: Container(
+                    padding: EdgeInsets.all(15),
+                    child: Column(
+                      children: <Widget>[
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text('Recent Movies', style: TextStyle(fontSize: 24)),
+                        ),
+                        Row(
+                          children: _recentMovieCovers()
+                        ),
+                        Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 10),
+                            child: Text('SEE ALL', style: TextStyle(color: blue))
+                          )
+                        )
+                      ]
+                    )
                   )
                 )
               )

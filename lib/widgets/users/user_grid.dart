@@ -86,6 +86,8 @@ class _UserGridState extends State<UserGrid> {
       print('<<<<<<<<<<< newData <<<<<<<<<<<<');
       print(newData);
       var pageData = widget.pageData(data);
+      print('<<<<<<<<<< pageData <<<<<<<<<<<');
+      print(pageData);
       if (newData.length >= 0) {
         setState(() {
             _endCursor = pageData['endCursor'];
