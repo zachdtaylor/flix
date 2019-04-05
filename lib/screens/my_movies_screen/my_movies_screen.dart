@@ -3,9 +3,12 @@ import 'package:flix_list/widgets/movies/movie_grid.dart';
 import 'vote_bar.dart';
 
 class MyMoviesScreen extends StatelessWidget {
+  MyMoviesScreen({Key key, this.showButton}) : super(key: key);
+  final Function(bool) showButton;
   @override
   Widget build(BuildContext context) {
     return MovieGrid(
+      showButton: showButton,
       query: 'graphql/movies/queries/paginated_movies.gql',
       emptyText: 'You haven\'t saved any movies yet!',
       buildVoteBar: (movie, onChange) {
