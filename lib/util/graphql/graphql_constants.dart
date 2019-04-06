@@ -2,6 +2,8 @@
 
 const String GQL_M_FOLLOW = 'graphql/users/mutations/follow.gql';
 
+const String GQL_M_MARK_ALL_READ = 'graphql/users/mutations/mark_all_read.gql';
+
 const String GQL_M_LOGIN = 'graphql/users/mutations/login.gql';
 
 const String GQL_M_UNFOLLOW = 'graphql/users/mutations/unfollow.gql';

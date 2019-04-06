@@ -1,0 +1,12 @@
+mutation markRead {
+  markAllRead {
+    notifications {
+      edges {
+        node {
+          read
+          createdAt
+        }
+      }
+    }
+  }
+}

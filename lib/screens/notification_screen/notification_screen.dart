@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flix_list/util/graphql/pagination.dart';
 import 'package:flix_list/util/graphql/graphql_query.dart';
+import 'package:flix_list/util/graphql/graphql_mutation.dart';
 import 'package:flix_list/util/graphql/graphql_constants.dart';
+import 'package:flix_list/util/utils.dart';
 
 class NotificationScreen extends StatefulWidget {
   @override
@@ -34,7 +36,10 @@ class _NotificationScreenState extends State<NotificationScreen> with Pagination
       setState((){
         _notifications.addAll(data);
         _loading = false;
+        _hasQueried = true;
       });
+
+      GraphqlMutation(operation: GQL_M_MARK_ALL_READ).execute();
     })
     .catchError((error){
       print('In error');
@@ -42,6 +47,7 @@ class _NotificationScreenState extends State<NotificationScreen> with Pagination
       setState((){
         _loading = false;
       });
+
     });
   }
 
@@ -54,11 +60,98 @@ class _NotificationScreenState extends State<NotificationScreen> with Pagination
   }
 
   Widget _recomendationNotification(notification) {
-    return Text(notification['fromUser']['name'] + " has recommended you a movie.\nCheck out " + notification['movie']['title']);
+    return GestureDetector(
+      onTap: () => goToMovieScreen(context, int.parse(notification['movie']['tmdbId'])),
+      child: Container(
+        child: Card(
+          child: Row(
+            children: <Widget>[
+              Column(
+                children:<Widget>[
+                  Container(
+                    child: Container(
+                      margin: EdgeInsets.only(left: 8, top: 6, bottom: 6),
+                      width: MediaQuery.of(context).size.width * 0.18,
+                      height: MediaQuery.of(context).size.height * 0.12,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.fill,
+                          image: NetworkImage(notification['movie']['cover'])
+                        )
+                      ),
+                    )
+                  )
+                ]
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 20.0)
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.70,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget> [
+                    Text(
+                      notification['fromUser']['name'] + " has recommended the movie " + notification['movie']['title'] + " to you.",
+                      textAlign: TextAlign.center
+                    )
+                  ]
+                )
+              )
+            ]
+          )
+        )
+      )
+    );
   }
 
   Widget _newFollowerNotification(notification) {
-    return Text(notification['follower']['name'] + " is now following you.");
+    return GestureDetector(
+      onTap: () => goToUserScreen(context, int.parse(notification['follower']['userId'])),
+      child: Container(
+        child: Card(
+          child: Row(
+            children: <Widget>[
+              Column(
+                children:<Widget>[
+                  Container(
+                    child: Container(
+                      margin: EdgeInsets.only(left: 8, top: 6, bottom: 6),
+                      width: MediaQuery.of(context).size.width * 0.18,
+                      height: MediaQuery.of(context).size.height * 0.12,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.fill,
+                          image: NetworkImage('http://readyandresilient.army.mil/img/no-profile.png')
+                        )
+                      ),
+                    )
+                  )
+                ]
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 20.0)
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.70,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget> [
+                    Text(
+                      notification['follower']['name'] + " is now following you.",
+                      textAlign: TextAlign.center
+                    ),
+                  ]
+                )
+
+              )
+            ]
+          )
+        )
+      )
+    );
   }
 
   Widget _child(){
@@ -75,12 +168,39 @@ class _NotificationScreenState extends State<NotificationScreen> with Pagination
         )
       );
     } else {
+
+      var length = _notifications.length + 1;
+      var readIndex = _notifications.indexWhere((notification) => notification['read'] == true);
+      if (readIndex != -1) {
+       length += 1;
+      }
+
       view = ListView.builder(
         controller: paginationController,
         physics: const AlwaysScrollableScrollPhysics(),
-        itemCount: _notifications != null ? _notifications.length : 0,
+        itemCount: _notifications != null ? length : 0,
         itemBuilder: (context, index) {
-          var notification = _notifications[index];
+          if (index == 0) {
+            return Card(
+              child: Container(
+                margin: EdgeInsets.all(12),
+                child: Text('New')
+              )
+            );
+          }
+          if (readIndex != -1 && index == readIndex + 1) {
+            return Card(
+              margin: EdgeInsets.only(top: 12, bottom: 4),
+              child: Container(
+                margin: EdgeInsets.all(12),
+                child: Text('Earlier')
+              )
+            );
+          }
+          var pos = index - 1;
+          if (readIndex != -1 && index > readIndex + 1) pos -= 1;
+
+          var notification = _notifications[pos];
           String type = notification['__typename'];
           print(type);
           switch(type) {

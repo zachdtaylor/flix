@@ -39,6 +39,8 @@ class _HomeState extends State<Home> {
       MyMoviesScreen(showButton: _showButton),
       FriendsScreen(showButton: _showButton)
     ];
+
+      _getUnreadNotificationCount();
   }
 
   Future<void> _getUnreadNotificationCount() async {
@@ -95,7 +97,10 @@ class _HomeState extends State<Home> {
         badgeColor: Theme.of(context).accentColor, // default: Colors.red
         badgeTextColor: Colors.white, // default: Colors.white
         hideZeroCount: true, // default: true
-        onPressed: () => Navigator.pushNamed(context, '/notifications'),
+        onPressed: () {
+          Navigator.pushNamed(context, '/notifications');
+          _notificationCount = 0;
+        },
       ),
     ];
   }

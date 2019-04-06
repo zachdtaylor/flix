@@ -37,14 +37,14 @@ class _UserScreenState extends State<UserScreen> {
     );
     Map<String, dynamic> data = result.data;
     var user = data['user'];
-    print("<<<<<<<<<<<< user <<<<<<<<<<<<");
-    print(user);
+    // print("<<<<<<<<<<<< user <<<<<<<<<<<<");
+    // print(user);
     setState(() {
       name = user['name'];
       email = user['email'];
       followeeCount = user['followeeCount'];
       followerCount = user['followerCount'];
-      recentMovies = user['movies']['edges'].map((movie) => movie['node']);
+      recentMovies = user['movies']['edges'].map((movie) => movie['node']).toList();
       if (!_hasQueried) {
         following = user['following'];
         _hasQueried = true;

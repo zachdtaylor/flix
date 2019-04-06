@@ -14,7 +14,7 @@ abstract class GraphqlOperation {
 
   static GraphQLClient createClient() {
     final HttpLink httpLink = HttpLink(
-      uri: 'http://192.168.215.240:8000/graphql',
+      uri: 'http://192.168.0.105:8000/graphql',
     );
 
     final AuthLink authLink = AuthLink(
