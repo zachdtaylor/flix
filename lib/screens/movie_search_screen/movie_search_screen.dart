@@ -21,6 +21,7 @@ class MovieSearchScreen extends StatelessWidget {
         Map<String, dynamic>  data = result.data;
         return data['searchMovies'];
       },
+      searchText: 'Search movies...',
       buildResult: (movie) {
         var tmdbId = int.parse(movie['tmdbId']);
         var cover = movie['cover'];

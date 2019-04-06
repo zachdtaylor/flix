@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:badges/badges.dart';
+
+import 'package:flix_list/util/graphql/graphql_query.dart';
+import 'package:flix_list/util/graphql/graphql_constants.dart';
 
 import 'screens/feed_screen/feed_screen.dart';
 import 'screens/my_movies_screen/my_movies_screen.dart';
@@ -18,11 +19,13 @@ class _HomeState extends State<Home> {
   int _notificationCount = 0;
   bool _showFloatingButton = true;
   final List<String> _titles = ["Home", "My Movies", "Following"];
+  List<Widget> _children = [];
   PageController _pageController = PageController();
 
   @override
   void initState() {
     super.initState();
+
     _pageController.addListener(() {
         var page = _pageController.page.round();
         if (page == 0) _getUnreadNotificationCount();
@@ -30,20 +33,25 @@ class _HomeState extends State<Home> {
             _currentIndex = page;
         });
     });
+
+    _children = [
+      FeedScreen(),
+      MyMoviesScreen(showButton: _showButton),
+      FriendsScreen(showButton: _showButton)
+    ];
   }
 
   Future<void> _getUnreadNotificationCount() async {
-    QueryResult result = await GraphQLProvider.of(context).value.query(
-      QueryOptions(
-        fetchPolicy: FetchPolicy.networkOnly,
-        document: await rootBundle.loadString('graphql/users/queries/notification_count.gql')
-      )
-    );
-    if (result.errors == null || result.errors.length == 0) {
+    GraphqlQuery(operation: GQL_Q_NOTIFICATION_COUNT).execute()
+    .then((Map<String, dynamic> result){
+      print(result);
       setState(() {
-        _notificationCount = result.data['user']['unreadNotificationCount'];
+          _notificationCount = result['user']['unreadNotificationCount'];
       });
-    }
+    })
+    .catchError((error) {
+      print(error);
+    });
   }
 
   void _onTabTapped(int index) {
@@ -56,9 +64,11 @@ class _HomeState extends State<Home> {
   }
 
   _showButton(value) {
-    setState(() {
-      _showFloatingButton = value;
-    });
+    if (value != _showFloatingButton){
+      setState(() {
+          _showFloatingButton = value;
+      });
+    }
   }
 
   _floatingButton() {
@@ -75,10 +85,10 @@ class _HomeState extends State<Home> {
 
   _feedActions(context) {
     return <Widget>[
-      IconButton(
-        icon: Icon(Icons.filter_list, color: Colors.white),
-        tooltip: "Filter"
-      ),
+      // IconButton(
+      //   icon: Icon(Icons.filter_list, color: Colors.white),
+      //   tooltip: "Filter"
+      // ),
       BadgeIconButton(
         itemCount: _notificationCount, // required
         icon: Icon(Icons.notifications), // required
@@ -92,10 +102,10 @@ class _HomeState extends State<Home> {
 
   _movieActions(context) {
     return <Widget>[
-      IconButton(
-        icon: Icon(Icons.filter_list, color: Colors.white),
-        tooltip: "Filter"
-      ),
+      // IconButton(
+      //   icon: Icon(Icons.filter_list, color: Colors.white),
+      //   tooltip: "Filter"
+      // ),
       IconButton(
         icon: Icon(Icons.search, color: Colors.white),
         tooltip: "Search",
@@ -108,10 +118,10 @@ class _HomeState extends State<Home> {
 
   _followerActions(context) {
     return <Widget>[
-      IconButton(
-        icon: Icon(Icons.filter_list, color: Colors.white),
-        tooltip: "Filter"
-      ),
+      // IconButton(
+      //   icon: Icon(Icons.filter_list, color: Colors.white),
+      //   tooltip: "Filter"
+      // ),
       IconButton(
         icon: Icon(Icons.search, color: Colors.white),
         tooltip: "Search",
@@ -130,7 +140,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> _children = [FeedScreen(), MyMoviesScreen(showButton: _showButton), FriendsScreen(showButton: _showButton)];
     return Scaffold(
       appBar: AppBar(
         title: Text(_titles[_currentIndex]),

@@ -21,6 +21,7 @@ class UserSearchScreen extends StatelessWidget {
         Map<String, dynamic>  data = result.data;
         return data['searchUsers']['edges'].map((user) => user['node']).toList();
       },
+      searchText: 'Search people...',
       buildResult: (user) {
         var userId = int.parse(user['userId']);
         var name = user['name'];

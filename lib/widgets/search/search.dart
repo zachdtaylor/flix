@@ -5,11 +5,13 @@ import 'dart:async';
 class Search extends StatefulWidget {
   final Function(String) search;
   final Widget Function(dynamic) buildResult;
+  final String searchText;
 
   Search({
     Key key,
     this.search,
     this.buildResult,
+    this.searchText,
   }) : super(key: key);
 
   @override
@@ -62,7 +64,7 @@ class _SearchState extends State<Search> {
               }
             ),
             onChanged: (String value) => _debounceSearch(value),
-            decoration: InputDecoration.collapsed(hintText: "Search...")
+            decoration: InputDecoration.collapsed(hintText: widget.searchText == null ? "Search..." : widget.searchText)
           )
         ),
         Center(

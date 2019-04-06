@@ -1,5 +1,5 @@
-mutation login($email: String!, $password: String!) {
-  tokenAuth(username: $email, password: $password) {
+mutation login($username: String!, $password: String!) {
+  tokenAuth(username: $username, password: $password) {
     token
   }
 }

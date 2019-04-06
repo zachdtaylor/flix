@@ -6,6 +6,8 @@ import 'home.dart';
 import 'package:flix_list/screens/login_screen/login_screen.dart';
 import 'package:flix_list/screens/movie_search_screen/movie_search_screen.dart';
 import 'package:flix_list/screens/user_search_screen/user_search_screen.dart';
+import 'package:flix_list/screens/notification_screen/notification_screen.dart';
+import 'package:flix_list/util/graphql/graphql_operation.dart';
 import 'package:flutter/services.dart';
 
 void main() async {
@@ -25,32 +27,12 @@ class MyApp extends StatelessWidget {
     this.home,
   }) : super(key: key);
 
-  final HttpLink httpLink = HttpLink(
-    uri: 'https://flix-kdn.herokuapp.com/graphql',
-  );
-
-  final AuthLink authLink = AuthLink(
-    getToken: (() async {
-      String token = (await SharedPreferences.getInstance()).getString('auth_token');
-      if (token != null) {
-        return 'JWT ' + token;
-      } else {
-        return null;
-      }
-    })
-  );
-
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
-    final Link link = authLink.concat(httpLink);
-
     ValueNotifier<GraphQLClient> client = ValueNotifier(
-      GraphQLClient(
-        cache: InMemoryCache(),
-        link: link,
-      ),
+      GraphqlOperation.createClient(),
     );
 
     const Color primaryColor = Color(0xFF2B2B2B);//Color(0xFF204CA0);
@@ -68,7 +50,8 @@ class MyApp extends StatelessWidget {
           '/home': (BuildContext context) => Home(),
           '/login': (BuildContext context) => LoginScreen(),
           '/search/movies': (BuildContext context) => MovieSearchScreen(),
-          '/search/users': (BuildContext context) => UserSearchScreen()
+          '/search/users': (BuildContext context) => UserSearchScreen(),
+          '/notifications': (BuildContext context) => NotificationScreen()
         },
         theme: ThemeData(
           brightness: Brightness.dark,
