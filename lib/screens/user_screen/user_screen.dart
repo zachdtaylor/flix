@@ -85,8 +85,8 @@ class _UserScreenState extends State<UserScreen> {
         GestureDetector(
           onTap: () => goToMovieScreen(context, int.parse(movie['tmdbId'])),
           child: Container(
-            width: MediaQuery.of(context).size.width*0.25,
-            height: MediaQuery.of(context).size.height*0.2,
+            width: MediaQuery.of(context).size.width*0.27,
+            height: MediaQuery.of(context).size.height*0.23,
             decoration: BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.fill,

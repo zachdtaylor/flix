@@ -75,6 +75,35 @@ class _MovieScreenState extends State<MovieScreen> {
     }
   }
 
+  _ratingTotals(title, dislike, like) {
+    return Container(
+      child: Row(
+        children: <Widget>[
+          Padding(
+            child: Text(title),
+            padding: EdgeInsets.all(4),
+          ),
+          Padding(
+            child: Text(dislike.toString()),
+            padding: EdgeInsets.all(4),
+          ),
+          Padding(
+            child: Icon(Icons.thumb_down, color: Colors.white),
+            padding: EdgeInsets.all(4),
+          ),
+          Padding(
+            child: Text(like.toString()),
+            padding: EdgeInsets.all(4),
+          ),
+          Padding(
+            child: Icon(Icons.thumb_up, color: Colors.white),
+            padding: EdgeInsets.all(4),
+          ),
+        ]
+      )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (imageUrl == null && summary == null && title == null) {
@@ -161,27 +190,51 @@ class _MovieScreenState extends State<MovieScreen> {
                         padding: EdgeInsets.all(15),
                         child: Column(
                           children: <Widget>[
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(title, style: TextStyle(fontSize: 24))
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              child: Row(
+                                children: <Widget>[
+                                  Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text(title, style: TextStyle(fontSize: 24))
+                                  ),
+                                  Spacer(),
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: _ratingTotals("Total:", totalDislikes, totalLikes)
+                                  )
+                                ]
+                              )
                             ),
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(year, style: TextStyle(fontSize: 16))
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              child: Row(
+                                children: <Widget>[
+                                  Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text(year, style: TextStyle(fontSize: 16))
+                                  ),
+                                  Spacer(),
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: _ratingTotals("Friends:", totalDislikes, totalLikes)
+                                  )
+                                ]
+                              )
                             ),
                             SizedBox(height:MediaQuery.of(context).size.height*0.015),
-                            Text(summary, softWrap: true),
-                            Divider(
-                              height: 24.0,
-                              color: white
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                Text('$totalDislikes ' + (totalDislikes == 1 ? 'dislike' : 'dislikes')),
-                                Text('$totalLikes ' + (totalLikes == 1 ? 'like' : 'likes'))
-                              ]
-                            )
+                            Text(summary, softWrap: true)  ,
+                            // Divider(
+                            //   height: 24.0,
+                            //   color: white
+                            // ),
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            //   children: <Widget>[
+                            //     Text('$totalDislikes ' + (totalDislikes == 1 ? 'Total Dislike' : 'Total Dislikes')),
+                            //     Text('$totalLikes ' + (totalLikes == 1 ? 'Total Like' : 'Total Likes'))
+                            //   ]
+                            // ),
                           ]
                         )
                       )
