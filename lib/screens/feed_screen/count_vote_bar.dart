@@ -63,11 +63,12 @@ class _CountVoteBarState extends State<CountVoteBar> {
   Widget build(BuildContext context) {
     Color black = Color(0xFF000000);
     Color blue = Theme.of(context).accentColor;
+    Color red = Theme.of(context).errorColor;
 
     return Row(
       children: <Widget>[
         IconButton(
-          icon: Icon(Icons.thumb_down, color: _disliked ? blue : black),
+          icon: Icon(Icons.thumb_down, color: _disliked ? red : black),
           onPressed: _dislike,
         ),
         SizedBox(
@@ -75,7 +76,7 @@ class _CountVoteBarState extends State<CountVoteBar> {
           child: Container(
             child: Text(
               _dislikes.toString(),
-              style: TextStyle(color: _disliked ? blue : black, fontWeight: FontWeight.bold)
+              style: TextStyle(color: _disliked ? red : black, fontWeight: FontWeight.bold)
             ),
           ),
         ),

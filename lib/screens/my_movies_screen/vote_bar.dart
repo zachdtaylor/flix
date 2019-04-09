@@ -25,11 +25,12 @@ class _VoteBarState extends State<VoteBar> {
   Widget build(BuildContext context) {
     Color black = Color(0xFF000000);
     Color blue = Theme.of(context).accentColor;
+    Color red = Theme.of(context).errorColor;
 
     return Row(
       children: <Widget>[
         IconButton(
-          icon: Icon(Icons.thumb_down, color: _disliked ? blue : black),
+          icon: Icon(Icons.thumb_down, color: _disliked ? red : black),
           onPressed: () {
             widget.onChange(_disliked ? null : false);
             setState(() {

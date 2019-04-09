@@ -84,6 +84,7 @@ class _MovieScreenState extends State<MovieScreen> {
     Color white = Color(0xFFFFFFFF);
     Color black = Color(0xFF000000);
     Color blue = Theme.of(context).accentColor;
+    Color red = Theme.of(context).errorColor;
 
     return imageUrl == null ? Center(child:CircularProgressIndicator(strokeWidth: 4)) : Scaffold(
       body: Scaffold(
@@ -133,7 +134,7 @@ class _MovieScreenState extends State<MovieScreen> {
                         //   icon: Icon(Icons.share, color: white)
                         // ),
                         IconButton(
-                          icon: Icon(Icons.thumb_down, color: _disliked ? blue : white),
+                          icon: Icon(Icons.thumb_down, color: _disliked ? red : white),
                           onPressed: () {
                             _respondToMovie(_disliked ? null : false);
                             setState(() {
