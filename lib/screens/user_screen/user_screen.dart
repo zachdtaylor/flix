@@ -30,9 +30,7 @@ class _UserScreenState extends State<UserScreen> {
         document: await rootBundle.loadString('graphql/users/queries/user_details.gql'),
         variables: {
           'userId': widget.userId,
-          'responseUserId': 1,
           'first': 3,
-          'after': ''
         }
       )
     );
