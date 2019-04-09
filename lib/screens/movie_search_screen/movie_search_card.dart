@@ -16,6 +16,7 @@ class MovieSearchCard extends StatelessWidget {
       imageUrl: imageUrl,
       loadingImageUrl: 'images/cover_unavailable.jpg',
       onTap: () => goToMovieScreen(context, tmdbId),
+      height: 0.15
     );
   }
 

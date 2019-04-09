@@ -16,6 +16,7 @@ class UserSearchCard extends StatelessWidget {
       imageUrl: profileUrl,
       loadingImageUrl: 'images/cover_unavailable.jpg',
       onTap: () => goToUserScreen(context, userId),
+      height: 0.1
     );
   }
 

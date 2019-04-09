@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 class SearchCard extends StatelessWidget {
-  SearchCard({Key key, this.title, this.imageUrl, this.loadingImageUrl, this.onTap}) : super(key: key);
+  SearchCard({Key key, this.title, this.imageUrl, this.loadingImageUrl, this.onTap, this.height}) : super(key: key);
 
   final String title;
   final String imageUrl;
   final String loadingImageUrl;
   final Function onTap;
+  final double height;
 
   _image() {
     try {
@@ -28,8 +29,9 @@ class SearchCard extends StatelessWidget {
             Expanded(
               flex: 1,
               child: Container(
+                margin: EdgeInsets.all(5),
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height*0.15,
+                height: MediaQuery.of(context).size.height*height,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.fill,
@@ -41,7 +43,7 @@ class SearchCard extends StatelessWidget {
             Expanded(
               flex: 4,
               child: Container(
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                padding: EdgeInsets.fromLTRB(5, 10, 10, 10),
                 width:MediaQuery.of(context).size.width,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,

@@ -24,6 +24,7 @@ class UserCard extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
                   decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5)),
                     image: DecorationImage(
                       fit: BoxFit.fill,
                       image: NetworkImage(imageUrl)
