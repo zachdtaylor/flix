@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flix_list/widgets/movies/movie_card.dart';
 import 'package:flix_list/util/utils.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -9,7 +8,7 @@ import 'dart:async';
 class MovieGrid extends StatefulWidget {
   final String query;
   final String emptyText;
-  final Function buildVoteBar;
+  final Function buildWidget;
   final Function resultData;
   final Function pageData;
   final Function(bool) showButton;
@@ -18,7 +17,7 @@ class MovieGrid extends StatefulWidget {
     Key key,
     this.query,
     this.emptyText,
-    this.buildVoteBar,
+    this.buildWidget,
     this.resultData,
     this.pageData,
     this.showButton
@@ -138,9 +137,8 @@ class _MovieGridState extends State<MovieGrid> {
         padding: EdgeInsets.all(10.0),
         itemBuilder: (context, index) {
           var movie = _movies[index];
-          var cover = movie['cover'];
           var tmdbId = int.parse(movie['tmdbId']);
-          return MovieCard(tmdbId: tmdbId, child: widget.buildVoteBar(movie,  (like) => _onResponseChange(like, tmdbId)), imageUrl: cover);
+          return widget.buildWidget(movie, (like) => _onResponseChange(like, tmdbId));
         }
       );
     }
