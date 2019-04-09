@@ -3,6 +3,8 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flix_list/screens/friend_movies_screen/friend_movies_screen.dart';
 import 'package:flix_list/util/utils.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flix_list/util/graphql/graphql_query.dart';
+import 'package:flix_list/util/graphql/graphql_constants.dart';
 
 class UserScreen extends StatefulWidget {
   UserScreen({Key key, this.userId}) : super(key: key);
@@ -17,6 +19,7 @@ class _UserScreenState extends State<UserScreen> {
   String imageUrl = 'http://readyandresilient.army.mil/img/no-profile.png';
   String name;
   String email;
+  String photo;
   int followeeCount;
   int followerCount;
   bool following;
@@ -24,30 +27,33 @@ class _UserScreenState extends State<UserScreen> {
   bool _hasQueried = false;
 
   _getInfo() async {
-    QueryResult result = await GraphQLProvider.of(context).value.query(
-      QueryOptions(
-        fetchPolicy: FetchPolicy.networkOnly,
-        document: await rootBundle.loadString('graphql/users/queries/user_details.gql'),
-        variables: {
-          'userId': widget.userId,
-          'first': 3,
+    GraphqlQuery(operation: GQL_Q_USER_DETAILS)
+    .execute(variables: {
+        'userId': widget.userId,
+        'first': 3,
+    })
+    .then((data){
+      var user = data['user'];
+      setState(() {
+          name = user['name'];
+          email = user['email'];
+          photo = user['photoUri'];
+          followeeCount = user['followeeCount'];
+          followerCount = user['followerCount'];
+          recentMovies = user['movies']['edges'].map((movie) => movie['node']).toList();
+          if (!_hasQueried) {
+            following = user['following'];
+            _hasQueried = true;
+          }
+      });
+    })
+    .catchError((error){
+      print(error);
+      setState((){
+        if (!_hasQueried){
+          _hasQueried = true;
         }
-      )
-    );
-    Map<String, dynamic> data = result.data;
-    var user = data['user'];
-    // print("<<<<<<<<<<<< user <<<<<<<<<<<<");
-    // print(user);
-    setState(() {
-      name = user['name'];
-      email = user['email'];
-      followeeCount = user['followeeCount'];
-      followerCount = user['followerCount'];
-      recentMovies = user['movies']['edges'].map((movie) => movie['node']).toList();
-      if (!_hasQueried) {
-        following = user['following'];
-        _hasQueried = true;
-      }
+      });
     });
   }
 
@@ -117,7 +123,7 @@ class _UserScreenState extends State<UserScreen> {
                   image: DecorationImage(
                     fit: BoxFit.fitWidth,
                     alignment: Alignment.topCenter,
-                    image: NetworkImage(imageUrl)
+                    image: NetworkImage(photo != null && photo != "" ? photo : imageUrl)
                   )
                 )
               ),

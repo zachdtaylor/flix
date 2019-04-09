@@ -27,6 +27,7 @@ query notifications($first: Int, $after: String){
             follower {
               userId
               name
+              photoUri
             }
           }
         }

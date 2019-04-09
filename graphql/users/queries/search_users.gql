@@ -4,6 +4,7 @@ query searchUsers($text: String!, $first: Int, $after: String) {
       node{
         userId
         name
+        photoUri
       }
     }
   }
