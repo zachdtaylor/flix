@@ -107,6 +107,7 @@ class _NotificationScreenState extends State<NotificationScreen> with Pagination
   }
 
   Widget _newFollowerNotification(notification) {
+    var photoUri = notification['follower']['photoUri'];
     return GestureDetector(
       onTap: () => goToUserScreen(context, int.parse(notification['follower']['userId'])),
       child: Container(
@@ -123,7 +124,7 @@ class _NotificationScreenState extends State<NotificationScreen> with Pagination
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           fit: BoxFit.fill,
-                          image: NetworkImage('http://readyandresilient.army.mil/img/no-profile.png')
+                          image: NetworkImage( (photoUri != null && photoUri != '') ? photoUri : 'http://readyandresilient.army.mil/img/no-profile.png')
                         )
                       ),
                     )

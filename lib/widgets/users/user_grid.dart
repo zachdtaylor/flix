@@ -137,10 +137,12 @@ class _UserGridState extends State<UserGrid> {
         itemBuilder: (context, index) {
           var user = _users[index];
           var name = user['name'];
+          var photo = user['photoUri'];
           var userId = int.parse(user['userId']);
           return UserCard(
             onTap: widget.onTap,
             userId: userId,
+            photo: photo,
             child: widget.buildNameBar(name)
           );
         }

@@ -26,7 +26,7 @@ class SearchCard extends StatelessWidget {
           direction: Axis.horizontal,
           children: <Widget>[
             Expanded(
-              flex: 1,
+              flex: 5,
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height*0.15,
@@ -39,7 +39,7 @@ class SearchCard extends StatelessWidget {
               )
             ),
             Expanded(
-              flex: 4,
+              flex: 16,
               child: Container(
                 padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                 width:MediaQuery.of(context).size.width,

@@ -6,6 +6,7 @@ query userDetails($userId: ID, $responseUserId: ID, $first: Int, $after: String)
     following
     followeeCount
     followerCount
+    photoUri
     movies(first: $first, after: $after) {
       edges {
         node {
