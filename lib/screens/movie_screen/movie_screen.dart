@@ -234,7 +234,7 @@ class _MovieScreenState extends State<MovieScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
                                 _ratingTotals("Total:", totalDislikes, totalLikes),
-                                _ratingTotals("Friends:", totalDislikes, totalLikes)
+                                _ratingTotals("Friends:", followeeDislikes, followeeLikes)
                               ],
                             ),
                             Divider(
