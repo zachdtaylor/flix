@@ -23,6 +23,8 @@ class _MovieScreenState extends State<MovieScreen> {
   String year;
   int totalLikes;
   int totalDislikes;
+  int followeeLikes;
+  int followeeDislikes;
   bool _liked;
   bool _disliked;
   bool _hasQueried = false;
@@ -50,6 +52,8 @@ class _MovieScreenState extends State<MovieScreen> {
         year = DateFormat.yMMMM().format(DateTime.parse(movie['releaseDate']));
         totalLikes = movie['totalLikes'];
         totalDislikes = movie['totalDislikes'];
+        followeeLikes = movie['followeeLikes'];
+        followeeDislikes = movie['followeeDislikes'];
         if (!_hasQueried) {
           _liked = liked(movie['userResponse']);
           _disliked = disliked(movie['userResponse']);
