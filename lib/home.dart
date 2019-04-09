@@ -18,7 +18,7 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
   int _notificationCount = 0;
   bool _showFloatingButton = true;
-  final List<String> _titles = ["Friend's Recent Ratings", "My Movies", "Following"];
+  final List<String> _titles = ["Friends' Recent Ratings", "My Movies", "Following"];
   final List<String> _tabs = ["Home", "My Movies", "Following"];
   List<Widget> _children = [];
   PageController _pageController = PageController();
