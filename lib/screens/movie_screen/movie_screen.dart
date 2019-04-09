@@ -167,10 +167,10 @@ class _MovieScreenState extends State<MovieScreen> {
                             ),
                             Align(
                               alignment: Alignment.topLeft,
-                              child: Text(year, style: TextStyle(fontSize: 16))
+                              child: Text(year, style: TextStyle(height: 1.4, fontSize: 16))
                             ),
                             SizedBox(height:MediaQuery.of(context).size.height*0.015),
-                            Text(summary, softWrap: true),
+                            Text(summary, softWrap: true, style: TextStyle(height: 1.5)),
                             Divider(
                               height: 24.0,
                               color: white
