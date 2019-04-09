@@ -18,7 +18,8 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
   int _notificationCount = 0;
   bool _showFloatingButton = true;
-  final List<String> _titles = ["Home", "My Movies", "Following"];
+  final List<String> _titles = ["Friend's Recent Ratings", "My Movies", "Following"];
+  final List<String> _tabs = ["Home", "My Movies", "Following"];
   List<Widget> _children = [];
   PageController _pageController = PageController();
 
@@ -157,9 +158,9 @@ class _HomeState extends State<Home> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text(_titles[0])),
-          BottomNavigationBarItem(icon: Icon(Icons.list), title: Text(_titles[1])),
-          BottomNavigationBarItem(icon: Icon(Icons.people), title: Text(_titles[2]))
+          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text(_tabs[0])),
+          BottomNavigationBarItem(icon: Icon(Icons.list), title: Text(_tabs[1])),
+          BottomNavigationBarItem(icon: Icon(Icons.people), title: Text(_tabs[2]))
         ],
         onTap: _onTabTapped,
         currentIndex: _currentIndex,
