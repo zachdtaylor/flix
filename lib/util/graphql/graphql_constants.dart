@@ -22,6 +22,8 @@ const String GQL_Q_NOTIFICATION_COUNT = 'graphql/users/queries/notification_coun
 
 const String GQL_M_MOVIE_RESPONSE = 'graphql/movies/mutations/movie_response.gql';
 
+const String GQL_M_RECOMMEND_MOVIE = 'graphql/movies/mutations/recommend_movie.gql';
+
 const String GQL_Q_RECENT_MOVIES = 'graphql/movies/queries/recent_movies.gql';
 
 const String GQL_Q_SEARCH_MOVIES = 'graphql/movies/queries/search_movies.gql';

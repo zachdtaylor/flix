@@ -1,6 +1,6 @@
 query movieDetails($tmdbId: ID!) {
   movie(tmdbId: $tmdbId) {
-    id
+    movieId
     title
     summary
     cover

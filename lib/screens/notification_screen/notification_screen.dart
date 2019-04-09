@@ -24,29 +24,29 @@ class _NotificationScreenState extends State<NotificationScreen> with Pagination
 
   _loadData() {
     setState((){
-      _loading = true;
+        _loading = true;
     });
     GraphqlQuery(operation: GQL_Q_NOTIFICATIONS)
-    .execute()
+    .execute(variables: paginatedVariables(variables: {}))
     .then((Map<String, dynamic> result) {
-      var info = result['user']['notifications']['pageInfo'];
-      pageInfo.update(info: info);
+        var info = result['user']['notifications']['pageInfo'];
+        pageInfo.update(info: info);
 
-      var data = result['user']['notifications']['edges'].map((edge) => edge['node']).toList();
-      setState((){
-        _notifications.addAll(data);
-        _loading = false;
-        _hasQueried = true;
-      });
+        var data = result['user']['notifications']['edges'].map((edge) => edge['node']).toList();
+        setState((){
+            _notifications.addAll(data);
+            _loading = false;
+            _hasQueried = true;
+        });
 
-      GraphqlMutation(operation: GQL_M_MARK_ALL_READ).execute();
+        GraphqlMutation(operation: GQL_M_MARK_ALL_READ).execute();
     })
     .catchError((error){
-      print('In error');
-      print(error.toString());
-      setState((){
-        _loading = false;
-      });
+        print('In error');
+        print(error.toString());
+        setState((){
+            _loading = false;
+        });
 
     });
   }
@@ -54,7 +54,7 @@ class _NotificationScreenState extends State<NotificationScreen> with Pagination
   Future<void> _refresh() async {
     pageInfo.reset();
     setState((){
-      _notifications = [];
+        _notifications = [];
     });
     await _loadData();
   }
@@ -169,10 +169,20 @@ class _NotificationScreenState extends State<NotificationScreen> with Pagination
       );
     } else {
 
-      var length = _notifications.length + 1;
+      var length = _notifications.length;
+      bool displayNew = false;
+      bool displayEarlier = false;
+
       var readIndex = _notifications.indexWhere((notification) => notification['read'] == true);
+
       if (readIndex != -1) {
-       length += 1;
+        length += 1;
+        displayEarlier = true;
+      }
+
+      if (readIndex > 0 || readIndex == -1) {
+        length += 1;
+        displayNew = true;
       }
 
       view = ListView.builder(
@@ -180,25 +190,32 @@ class _NotificationScreenState extends State<NotificationScreen> with Pagination
         physics: const AlwaysScrollableScrollPhysics(),
         itemCount: _notifications != null ? length : 0,
         itemBuilder: (context, index) {
-          if (index == 0) {
-            return Card(
+
+          if (index == 0 && displayNew) {
+            return Container(
+              margin: EdgeInsets.only(top: 6),
               child: Container(
                 margin: EdgeInsets.all(12),
-                child: Text('New')
+                child: Text('New Notifications')
               )
             );
           }
-          if (readIndex != -1 && index == readIndex + 1) {
-            return Card(
-              margin: EdgeInsets.only(top: 12, bottom: 4),
+
+          var earlierLocation = readIndex;
+          if (displayNew) earlierLocation += 1;
+          if (displayEarlier && index == earlierLocation) {
+            return Container(
+              margin: !displayNew ? EdgeInsets.only(top: 12) : EdgeInsets.only(),
               child: Container(
                 margin: EdgeInsets.all(12),
-                child: Text('Earlier')
+                child: Text('Read Notifications')
               )
             );
           }
-          var pos = index - 1;
-          if (readIndex != -1 && index > readIndex + 1) pos -= 1;
+
+          var pos = index;
+          if (displayNew) pos -= 1;
+          if (displayEarlier && index > earlierLocation ) pos -= 1;
 
           var notification = _notifications[pos];
           String type = notification['__typename'];

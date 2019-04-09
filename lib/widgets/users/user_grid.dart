@@ -11,6 +11,7 @@ class UserGrid extends StatefulWidget {
   final Function resultData;
   final Function pageData;
   final Function(bool) showButton;
+  final Function(int) onTap;
 
   UserGrid({
     Key key,
@@ -20,6 +21,7 @@ class UserGrid extends StatefulWidget {
     this.resultData,
     this.pageData,
     this.showButton,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -136,7 +138,11 @@ class _UserGridState extends State<UserGrid> {
           var user = _users[index];
           var name = user['name'];
           var userId = int.parse(user['userId']);
-          return UserCard(userId: userId, child: widget.buildNameBar(name));
+          return UserCard(
+            onTap: widget.onTap,
+            userId: userId,
+            child: widget.buildNameBar(name)
+          );
         }
       );
     }

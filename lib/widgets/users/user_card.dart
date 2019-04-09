@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flix_list/util/utils.dart';
 
 class UserCard extends StatelessWidget {
-  UserCard({Key key, @required this.child, this.userId}) : super(key: key);
+  UserCard({Key key, @required this.child, this.userId, this.onTap}) : super(key: key);
 
   final int userId;
   final Widget child;
   final String imageUrl = 'http://readyandresilient.army.mil/img/no-profile.png';
+  final Function(int) onTap;
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: GestureDetector(
-        onTap: () => goToUserScreen(context, userId),
+        onTap: this.onTap != null ? () => this.onTap(userId) : () => goToUserScreen(context, userId),
         child: Card(
           color:Color(0xFFFFFFFF),
           child: Column(

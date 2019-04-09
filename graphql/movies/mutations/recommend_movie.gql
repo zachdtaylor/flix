@@ -1,0 +1,7 @@
+mutation recommendMovie($movieId: ID!, $userId: ID!) {
+  recomendMovie(movieId: $movieId, userId: $userId) {
+    movie {
+      movieId
+    }
+  }
+}
