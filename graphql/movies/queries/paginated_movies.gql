@@ -1,4 +1,4 @@
-query paginatedMovies($userId: ID, $first: Int, $after: String) {
+query paginatedMovies($userId: ID, $responseUserId: ID, $first: Int, $after: String) {
   user(id: $userId) {
     movies(first: $first, after: $after) {
       pageInfo {
@@ -14,7 +14,7 @@ query paginatedMovies($userId: ID, $first: Int, $after: String) {
           id
           tmdbId
           cover
-          userResponse {
+          userResponse(userId: $responseUserId) {
             like
           }
         }

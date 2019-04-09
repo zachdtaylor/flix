@@ -74,7 +74,10 @@ class _MovieGridState extends State<MovieGrid> {
         'first': _pageCount,
         'after': _endCursor
       };
-      if (widget.userId != null) variables['userId'] = widget.userId;
+      if (widget.userId != null) {
+        variables['userId'] = widget.userId;
+        variables['responseUserId'] = widget.userId;
+      }
 
       QueryResult result = await GraphQLProvider.of(this.context).value.query(
         QueryOptions(

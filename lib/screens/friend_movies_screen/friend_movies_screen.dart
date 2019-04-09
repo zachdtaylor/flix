@@ -20,12 +20,12 @@ class FriendMoviesScreen extends StatelessWidget {
         query: 'graphql/movies/queries/paginated_movies.gql',
         emptyText: 'This user has not saved any movies!',
         buildWidget: (movie, onChange) {
+          print(movie);
           return MovieCard(
             tmdbId: int.parse(movie['tmdbId']), 
             child: FriendVoteBar(
               liked: liked(movie['userResponse']), 
-              disliked: disliked(movie['userResponse']), 
-              onChange: onChange
+              disliked: disliked(movie['userResponse'])
             ), 
             imageUrl: movie['cover']);
         },
