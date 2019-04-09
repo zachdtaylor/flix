@@ -12,6 +12,7 @@ class MovieGrid extends StatefulWidget {
   final Function resultData;
   final Function pageData;
   final Function(bool) showButton;
+  final int userId;
 
   MovieGrid({
     Key key,
@@ -20,7 +21,8 @@ class MovieGrid extends StatefulWidget {
     this.buildWidget,
     this.resultData,
     this.pageData,
-    this.showButton
+    this.showButton,
+    this.userId
   }) : super(key: key);
 
   @override
@@ -63,18 +65,22 @@ class _MovieGridState extends State<MovieGrid> {
   }
 
   _queryMovies() async {
+
     if (_hasNextPage) {
       setState((){
         _loading = true;
       });
+      var variables = {
+        'first': _pageCount,
+        'after': _endCursor
+      };
+      if (widget.userId != null) variables['userId'] = widget.userId;
+
       QueryResult result = await GraphQLProvider.of(this.context).value.query(
         QueryOptions(
           fetchPolicy: FetchPolicy.networkOnly,
           document: await rootBundle.loadString(widget.query),
-          variables: {
-            'first': _pageCount,
-            'after': _endCursor
-          }
+          variables: variables
         )
       );
       setState((){

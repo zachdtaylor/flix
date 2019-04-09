@@ -1,5 +1,5 @@
-query paginatedMovies($first: Int, $after: String) {
-  user {
+query paginatedMovies($userId: ID, $first: Int, $after: String) {
+  user(id: $userId) {
     movies(first: $first, after: $after) {
       pageInfo {
         hasNextPage
