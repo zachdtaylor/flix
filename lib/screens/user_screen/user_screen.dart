@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:flix_list/screens/friend_movies_screen/friend_movies_screen.dart';
 import 'package:flix_list/util/utils.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
@@ -80,8 +81,8 @@ class _UserScreenState extends State<UserScreen> {
         GestureDetector(
           onTap: () => goToMovieScreen(context, int.parse(movie['tmdbId'])),
           child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width*0.25,
+            height: MediaQuery.of(context).size.height*0.2,
             decoration: BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.fill,
@@ -172,30 +173,42 @@ class _UserScreenState extends State<UserScreen> {
                   )
                 )
               ),
-              GestureDetector(
-                onTap: () => {},
-                child: Card(
-                  margin: EdgeInsets.fromLTRB(5, 0, 5, 5),
-                  child: Container(
-                    padding: EdgeInsets.all(15),
-                    child: Column(
-                      children: <Widget>[
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Text('Recent Movies', style: TextStyle(fontSize: 24)),
-                        ),
-                        Row(
+              Card(
+                margin: EdgeInsets.fromLTRB(5, 0, 5, 5),
+                child: Container(
+                  padding: EdgeInsets.all(15),
+                  child: Column(
+                    children: <Widget>[
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Text('Recent Movies', style: TextStyle(fontSize: 24)),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10, bottom: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: _recentMovieCovers()
+                        )
+                      ),
+                      GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FriendMoviesScreen(
+                              userId: widget.userId,
+                              name: name
+                            )
+                          )
                         ),
-                        Align(
+                        child: Align(
                           alignment: Alignment.bottomLeft,
                           child: Padding(
                             padding: EdgeInsets.only(top: 10),
                             child: Text('SEE ALL', style: TextStyle(color: blue))
                           )
                         )
-                      ]
-                    )
+                      )
+                    ]
                   )
                 )
               )
