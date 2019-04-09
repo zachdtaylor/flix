@@ -120,7 +120,7 @@ class _NotificationScreenState extends State<NotificationScreen> with Pagination
                     child: Container(
                       margin: EdgeInsets.only(left: 8, top: 6, bottom: 6),
                       width: MediaQuery.of(context).size.width * 0.18,
-                      height: MediaQuery.of(context).size.height * 0.12,
+                      height: MediaQuery.of(context).size.height * 0.1,
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           fit: BoxFit.fill,
