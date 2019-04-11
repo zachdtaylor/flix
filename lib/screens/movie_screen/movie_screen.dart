@@ -202,11 +202,11 @@ class _MovieScreenState extends State<MovieScreen> {
                                     alignment: Alignment.topLeft,
                                     child: Text(title, style: TextStyle(fontSize: 24))
                                   ),
-                                  Spacer(),
-                                  Align(
-                                    alignment: Alignment.topRight,
-                                    child: _ratingTotals("Total:", totalDislikes, totalLikes)
-                                  )
+                                  // Spacer(),
+                                  // Align(
+                                  //   alignment: Alignment.topRight,
+                                  //   child: 
+                                  // )
                                 ]
                               )
                             ),
@@ -216,22 +216,32 @@ class _MovieScreenState extends State<MovieScreen> {
                                 children: <Widget>[
                                   Align(
                                     alignment: Alignment.topLeft,
-                                    child: Text(year, style: TextStyle(fontSize: 16))
+                                    child: Text(year, style: TextStyle(height: 1.4, fontSize: 16))
                                   ),
-                                  Spacer(),
-                                  Align(
-                                    alignment: Alignment.topRight,
-                                    child: _ratingTotals("Friends:", totalDislikes, totalLikes)
-                                  )
+                                  // Spacer(),
+                                  // Align(
+                                  //   alignment: Alignment.topRight,
+                                  //   child:
+                                  // )
                                 ]
                               )
                             ),
-                            SizedBox(height:MediaQuery.of(context).size.height*0.015),
-                            Text(summary, softWrap: true)  ,
-                            // Divider(
-                            //   height: 24.0,
-                            //   color: white
-                            // ),
+                            Divider(
+                              height: 24.0,
+                              color: white
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                _ratingTotals("Total:", totalDislikes, totalLikes),
+                                _ratingTotals("Friends:", followeeDislikes, followeeLikes)
+                              ],
+                            ),
+                            Divider(
+                              height: 24.0,
+                              color: white
+                            ),
+                            Text(summary, softWrap: true, style: TextStyle(height: 1.5))  ,
                             // Row(
                             //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             //   children: <Widget>[
