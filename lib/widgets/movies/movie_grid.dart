@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flix_list/util/utils.dart';
+import 'package:flix_list/widgets/movies/movie_filter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/rendering.dart';
 import 'dart:async';
 
 class MovieGrid extends StatefulWidget {
-  final String query;
+  final Function query;
   final String emptyText;
   final Function buildWidget;
   final Function resultData;
   final Function pageData;
   final Function(bool) showButton;
   final int userId;
+  final MovieFilter filter;
 
   MovieGrid({
     Key key,
@@ -22,7 +24,8 @@ class MovieGrid extends StatefulWidget {
     this.resultData,
     this.pageData,
     this.showButton,
-    this.userId
+    this.userId,
+    this.filter,
   }) : super(key: key);
 
   @override
@@ -38,12 +41,14 @@ class _MovieGridState extends State<MovieGrid> {
   List<dynamic> _movies = [];
   ScrollController _controller;
   Timer _debounce;
+  MovieFilter _filter;
 
   @override
   initState() {
     _controller = ScrollController();
     _controller.addListener(_scrollListener);
     _controller.addListener(_buttonListener);
+    _filter = widget.filter;
     super.initState();
   }
 
@@ -82,7 +87,7 @@ class _MovieGridState extends State<MovieGrid> {
       QueryResult result = await GraphQLProvider.of(this.context).value.query(
         QueryOptions(
           fetchPolicy: FetchPolicy.networkOnly,
-          document: await rootBundle.loadString(widget.query),
+          document: await rootBundle.loadString(widget.query()),
           variables: variables
         )
       );
@@ -162,6 +167,13 @@ class _MovieGridState extends State<MovieGrid> {
   Widget build(BuildContext context) {
     if (!_hasQueried) {
       _queryMovies();
+    }
+    if (_filter != widget.filter) {
+      print('heree');
+      setState((){
+        _filter = widget.filter;
+      });
+      _refresh();
     }
     return Container(
       child: _child()

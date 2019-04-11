@@ -1,0 +1,27 @@
+query userDetails($userId: ID, $responseUserId: ID, $first: Int, $after: String) {
+  user(id: $userId) {
+    userId
+    name
+    email
+    following
+    followeeCount
+    followerCount
+    photoUri
+    likedMovies(first: $first, after: $after) {
+      pageInfo {
+        hasNextPage
+        startCursor
+        endCursor
+      }
+      edges {
+        node {
+          tmdbId
+          cover
+          userResponse(userId: $responseUserId) {
+            like
+          }
+        }
+      }
+    }
+  }
+}

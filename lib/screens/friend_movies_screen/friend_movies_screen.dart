@@ -15,18 +15,24 @@ class FriendMoviesScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(name + "'s Movies"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.filter_list, color: Colors.white),
+            tooltip: "Filter"
+          ),
+        ]
       ),
       body: MovieGrid(
-        query: 'graphql/movies/queries/paginated_movies.gql',
+        query: () => 'graphql/movies/queries/paginated_movies.gql',
         emptyText: 'This user has not saved any movies!',
         buildWidget: (movie, onChange) {
           print(movie);
           return MovieCard(
-            tmdbId: int.parse(movie['tmdbId']), 
+            tmdbId: int.parse(movie['tmdbId']),
             child: FriendVoteBar(
-              liked: liked(movie['userResponse']), 
+              liked: liked(movie['userResponse']),
               disliked: disliked(movie['userResponse'])
-            ), 
+            ),
             imageUrl: movie['cover']);
         },
         resultData: (data) {

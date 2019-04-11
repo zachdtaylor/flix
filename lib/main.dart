@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
       GraphqlOperation.createClient(),
     );
 
-    const Color primaryColor = Color(0xFF2B2B2B);//Color(0xFF204CA0);
+    const Color primaryColor = Color(0xFF2B2B2B);
     const Color secondaryColor = Color(0xFF6B727C);
     final ColorScheme colorScheme = const ColorScheme.dark().copyWith(
       primary: primaryColor,
