@@ -276,21 +276,3 @@ class _MovieScreenState extends State<MovieScreen> {
     );
   }
 }
-
-
-
-
-
-
-// SliverAppBar(
-//   title: Text(title),
-//   expandedHeight: MediaQuery.of(context).size.height*0.80,
-//   pinned: true,
-//   floating: false,
-//   flexibleSpace: FlexibleSpaceBar(
-//     background: Image.network(
-//       imageUrl,
-//       fit: BoxFit.cover
-//     ),
-//   ),
-// ),

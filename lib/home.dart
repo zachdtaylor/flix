@@ -79,7 +79,7 @@ class _HomeState extends State<Home> {
       String path = _currentIndex == 1 ? '/search/movies' : '/search/users';
       return FloatingActionButton(
         onPressed: () => Navigator.pushNamed(context, path),
-        child: Icon(Icons.add,)
+        child: Icon(Icons.add)
       );
     } else {
       return null;
