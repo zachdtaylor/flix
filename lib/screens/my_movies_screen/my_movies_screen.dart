@@ -15,38 +15,11 @@ class MyMoviesScreen extends StatefulWidget {
 
 class _MyMoviesScreenState extends State<MyMoviesScreen>{
 
-  _query() {
-    MovieFilter value = widget.filter();
-    print(value);
-    if (value != null) {
-      if (value == MovieFilter.LIKED) {
-        print('liked');
-        return 'graphql/users/queries/user_details_filter_liked.gql';
-      } else if (value == MovieFilter.DISLIKED) {
-        print('disliked');
-        return 'graphql/users/queries/user_details_filter_disliked.gql';
-      }
-    }
-    return 'graphql/movies/queries/paginated_movies.gql';
-  }
-
-  _movieKey() {
-    MovieFilter value = widget.filter();
-    if (value != null) {
-      if (value == MovieFilter.LIKED) {
-        return 'likedMovies';
-      } else if (value == MovieFilter.DISLIKED) {
-        return 'dislikedMovies';
-      }
-    }
-    return 'movies';
-  }
-
   @override
   Widget build(BuildContext context) {
     return MovieGrid(
       showButton: widget.showButton,
-      query: _query,
+      query: () => MovieFilterDialog.query(widget.filter()),
       filter: widget.filter(),
       emptyText: 'You haven\'t saved any movies yet!',
       buildWidget: (movie, onChange) {
@@ -57,11 +30,11 @@ class _MyMoviesScreenState extends State<MyMoviesScreen>{
       },
       resultData: (data) {
         print(data);
-        var moviesData = data['user'][_movieKey()]['edges'];
+        var moviesData = data['user'][MovieFilterDialog.movieKey(widget.filter())]['edges'];
         return moviesData.map((movie) => movie['node']).toList();
       },
       pageData: (data) {
-        return data['user'][_movieKey()]['pageInfo'];
+        return data['user'][MovieFilterDialog.movieKey(widget.filter())]['pageInfo'];
       }
     );
   }

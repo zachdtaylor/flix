@@ -20,6 +20,30 @@ class MovieFilterDialog extends StatefulWidget{
     );
   }
 
+  static query(value) {
+    if (value != null) {
+      if (value == MovieFilter.LIKED) {
+        print('liked');
+        return 'graphql/users/queries/user_details_filter_liked.gql';
+      } else if (value == MovieFilter.DISLIKED) {
+        print('disliked');
+        return 'graphql/users/queries/user_details_filter_disliked.gql';
+      }
+    }
+    return 'graphql/movies/queries/paginated_movies.gql';
+  }
+
+  static movieKey(value) {
+    if (value != null) {
+      if (value == MovieFilter.LIKED) {
+        return 'likedMovies';
+      } else if (value == MovieFilter.DISLIKED) {
+        return 'dislikedMovies';
+      }
+    }
+    return 'movies';
+  }
+
   @override
   _MovieFilterDialogState createState() => _MovieFilterDialogState();
 }

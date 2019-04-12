@@ -14,7 +14,7 @@ abstract class GraphqlOperation {
 
   static GraphQLClient createClient() {
     final HttpLink httpLink = HttpLink(
-      uri: 'http://10.24.202.212:8000/graphql'
+      uri: 'http://flix-kdn.herokuapp.com/graphql'
     );
 
     final AuthLink authLink = AuthLink(
