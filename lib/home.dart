@@ -3,6 +3,7 @@ import 'package:badges/badges.dart';
 
 import 'package:flix_list/util/graphql/graphql_query.dart';
 import 'package:flix_list/util/graphql/graphql_constants.dart';
+import 'package:flix_list/widgets/movies/movie_filter.dart';
 
 import 'screens/feed_screen/feed_screen.dart';
 import 'screens/my_movies_screen/my_movies_screen.dart';
@@ -18,10 +19,15 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
   int _notificationCount = 0;
   bool _showFloatingButton = true;
+  MovieFilter _filter = MovieFilter.MOST_RECENT;
+
   final List<String> _titles = ["Friends' Recent Ratings", "My Movies", "Following"];
   final List<String> _tabs = ["Home", "My Movies", "Following"];
-  List<Widget> _children = [];
+
   PageController _pageController = PageController();
+  MyMoviesScreen movieScreen;
+  FeedScreen feedScreen;
+  FriendsScreen friendsScreen;
 
   @override
   void initState() {
@@ -35,25 +41,23 @@ class _HomeState extends State<Home> {
         });
     });
 
-    _children = [
-      FeedScreen(),
-      MyMoviesScreen(showButton: _showButton),
-      FriendsScreen(showButton: _showButton)
-    ];
+    feedScreen = FeedScreen();
+    movieScreen = MyMoviesScreen(showButton: _showButton, filter: _getFilter);
+    friendsScreen = FriendsScreen(showButton: _showButton);
 
-      _getUnreadNotificationCount();
+    _getUnreadNotificationCount();
   }
 
   Future<void> _getUnreadNotificationCount() async {
     GraphqlQuery(operation: GQL_Q_NOTIFICATION_COUNT).execute()
     .then((Map<String, dynamic> result){
-      print(result);
-      setState(() {
-          _notificationCount = result['user']['unreadNotificationCount'];
-      });
+        print(result);
+        setState(() {
+            _notificationCount = result['user']['unreadNotificationCount'];
+        });
     })
     .catchError((error) {
-      print(error);
+        print(error);
     });
   }
 
@@ -64,6 +68,10 @@ class _HomeState extends State<Home> {
       duration: const Duration(milliseconds: 300),
       curve: Curves.ease
     );
+  }
+
+  MovieFilter _getFilter() {
+    return _filter;
   }
 
   _showButton(value) {
@@ -108,10 +116,19 @@ class _HomeState extends State<Home> {
 
   _movieActions(context) {
     return <Widget>[
-      // IconButton(
-      //   icon: Icon(Icons.filter_list, color: Colors.white),
-      //   tooltip: "Filter"
-      // ),
+      IconButton(
+        icon: Icon(Icons.filter_list, color: Colors.white),
+        tooltip: "Filter",
+        onPressed: () async {
+          MovieFilter filter = await MovieFilterDialog.createDialog(context, currentValue: _filter);
+          if (filter != null) {
+            setState((){
+              _filter = filter;
+              movieScreen = MyMoviesScreen(showButton: _showButton, filter: _getFilter);
+            });
+          }
+        },
+      ),
       IconButton(
         icon: Icon(Icons.search, color: Colors.white),
         tooltip: "Search",
@@ -122,51 +139,55 @@ class _HomeState extends State<Home> {
     ];
   }
 
-  _followerActions(context) {
-    return <Widget>[
-      // IconButton(
-      //   icon: Icon(Icons.filter_list, color: Colors.white),
-      //   tooltip: "Filter"
-      // ),
-      IconButton(
-        icon: Icon(Icons.search, color: Colors.white),
-        tooltip: "Search",
-        onPressed: () {
-          Navigator.pushNamed(context, '/search/users');
-        },
-      )
-    ];
-  }
+    _followerActions(context) {
+      return <Widget>[
+        // IconButton(
+        //   icon: Icon(Icons.filter_list, color: Colors.white),
+        //   tooltip: "Filter"
+        // ),
+        IconButton(
+          icon: Icon(Icons.search, color: Colors.white),
+          tooltip: "Search",
+          onPressed: () {
+            Navigator.pushNamed(context, '/search/users');
+          },
+        )
+      ];
+    }
 
-  List<Widget> _actions(context, index) {
-    if (index == 0) return _feedActions(context);
-    else if (index == 1) return _movieActions(context);
-    else return _followerActions(context);
-  }
+    List<Widget> _actions(context, index) {
+      if (index == 0) return _feedActions(context);
+      else if (index == 1) return _movieActions(context);
+      else return _followerActions(context);
+    }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_titles[_currentIndex]),
-        actions: _actions(context, _currentIndex)
-      ),
-      body: PageView(
-        children: _children,
-        controller: _pageController,
-        scrollDirection: Axis.horizontal,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text(_tabs[0])),
-          BottomNavigationBarItem(icon: Icon(Icons.list), title: Text(_tabs[1])),
-          BottomNavigationBarItem(icon: Icon(Icons.people), title: Text(_tabs[2]))
-        ],
-        onTap: _onTabTapped,
-        currentIndex: _currentIndex,
-        fixedColor: Theme.of(context).toggleableActiveColor
-      ),
-      floatingActionButton: _showFloatingButton ? _floatingButton() : null,
-    );
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(_titles[_currentIndex]),
+          actions: _actions(context, _currentIndex)
+        ),
+        body: PageView(
+          children: [
+            feedScreen,
+            movieScreen,
+            friendsScreen,
+          ],
+          controller: _pageController,
+          scrollDirection: Axis.horizontal,
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: Icon(Icons.home), title: Text(_tabs[0])),
+            BottomNavigationBarItem(icon: Icon(Icons.list), title: Text(_tabs[1])),
+            BottomNavigationBarItem(icon: Icon(Icons.people), title: Text(_tabs[2]))
+          ],
+          onTap: _onTabTapped,
+          currentIndex: _currentIndex,
+          fixedColor: Theme.of(context).toggleableActiveColor
+        ),
+        floatingActionButton: _showFloatingButton ? _floatingButton() : null,
+      );
+    }
   }
-}
