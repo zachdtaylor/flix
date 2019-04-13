@@ -92,23 +92,25 @@ class _MovieFilterDialogState extends State<MovieFilterDialog>{
             _optionRow(text: 'Most Recently Rated', value: MovieFilter.MOST_RECENT),
             _optionRow(text: 'Liked', value: MovieFilter.LIKED),
             _optionRow(text: 'Disliked', value: MovieFilter.DISLIKED),
-          ]
+          ],
         ),
       ),
       actions: <Widget>[
         FlatButton(
-          child: Text('Cancel'),
+          child: Text('CANCEL', style: TextStyle(color: Colors.white)),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
         FlatButton(
-          child: Text('Save', style: TextStyle(color: Colors.white)),
+          child: Text('SAVE', style: TextStyle(color: Theme.of(context).accentColor)),
           onPressed: () {
             Navigator.of(context).pop(_radioValue);
           },
         ),
       ],
+      contentPadding: EdgeInsets.only(bottom: 0, left: 20),
+      titlePadding: EdgeInsets.all(20)
     );
   }
 }
