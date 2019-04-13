@@ -7,8 +7,8 @@ class GraphqlPageInfo {
 
   void update({Map<String, dynamic> info}) {
     if (info.containsKey('hasNextPage')) hasNextPage = info['hasNextPage'];
-    if (info.containsKey('startCursor')) startCursor = info['startCursor'];
-    if (info.containsKey('endCursor')) endCursor = info['endCursor'];
+    if (info.containsKey('startCursor') && info['startCursor'] != null) startCursor = info['startCursor'];
+    if (info.containsKey('endCursor') && info['endCursor'] != null) endCursor = info['endCursor'];
   }
 
   void reset() {
