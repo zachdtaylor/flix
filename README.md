@@ -10,6 +10,6 @@ This flutter app currently only runs on android. To run in debug mode:
 
 To run the production version, first build the apk, then install it to your device.
 
-`$ fluter clean` <br/>
+`$ flutter clean` <br/>
 `$ flutter build apk` <br/>
 `$ flutter install`
