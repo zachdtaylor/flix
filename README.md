@@ -1,16 +1,15 @@
-# flix_list
+# flix
 
-A new Flutter project.
+Flutter app for sharing movies with friends.
 
-## Getting Started
+## Installation
 
-This project is a starting point for a Flutter application.
+This flutter app currently only runs on android. To run in debug mode:
 
-A few resources to get you started if this is your first Flutter project:
+`$ flutter run`
 
-- [Lab: Write your first Flutter app](https://flutter.io/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.io/docs/cookbook)
+To run the production version, first build the apk, then install it to your device.
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+`$ fluter clean
+ $ flutter build apk
+ $ flutter install`
