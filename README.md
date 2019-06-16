@@ -9,12 +9,15 @@ See what movies your friends have rated
 ![Friends' Movies](screenshots/friends-movies.jpeg)
 
 Rate movies you've seen
+
 ![My Movies](screenshots/my-movies.jpeg)
 
 Find people to follow
+
 ![Following](screenshots/following.jpeg)
 
 See movie details
+
 ![Movie View](screenshots/movie-view.jpeg)
 
 ## Installation
