@@ -16,7 +16,7 @@ Find people to follow
 
 ![Following](screenshots/following.jpeg)
 
-See movie details
+Recommend movies to friends
 
 ![Movie View](screenshots/movie-view.jpeg)
 
